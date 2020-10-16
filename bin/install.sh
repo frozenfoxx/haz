@@ -1,6 +1,7 @@
 #!/usr/bin/env bash
 
 # Variables
+DEBIAN_FRONTEND=noninteractive
 HOSTNAME=$(hostname)
 NODOGSPLASH=${NODOGSPLASH:-'https://github.com/nodogsplash/nodogsplash.git'}
 RANDOM_MEDIA_PORTAL=${RANDOM_MEDIA_PORTAL:-"https://gitlab.com/frozenfoxx/random-media-portal.git"}
@@ -19,7 +20,7 @@ check_root()
 # Configure dhcpcd
 configure_dhcpcd()
 {
-  eval echo "[+] Configuring dhcpcd..." ${STD_LOG_ARG}
+  eval echo "Configuring dhcpcd..." ${STD_LOG_ARG}
 
   # Backup original config and install our own
   mv /etc/dhcpcd.conf /etc/dhcpcd.conf.orig
@@ -34,7 +35,7 @@ configure_dhcpcd()
 # Set up and configure dnsmasq
 configure_dnsmasq()
 {
-  eval echo "[+] Configuring dnsmasq..." ${STD_LOG_ARG}
+  eval echo "Configuring dnsmasq..." ${STD_LOG_ARG}
 
   # Backup original config and install our own
   mv /etc/dnsmasq.conf /etc/dnsmasq.conf.orig
@@ -47,7 +48,7 @@ configure_dnsmasq()
 # Set up and configure hostapd
 configure_hostapd()
 {
-  eval echo "[+] Configuring hostapd..." ${STD_LOG_ARG}
+  eval echo "Configuring hostapd..." ${STD_LOG_ARG}
 
   # Backup original config and install our own
   if [[ -f /etc/hostapd/hostapd.conf ]]; then
@@ -69,11 +70,11 @@ configure_hostapd()
 # Set up the network devices
 configure_network()
 {
-  eval echo "[+] Configuring network devices..." ${STD_LOG_ARG}
+  eval echo "Configuring network devices..." ${STD_LOG_ARG}
 
   cp ${SCRIPT_DIR}/../etc/network/interfaces.d/wlan0 /etc/network/interfaces.d/wlan0
 
-  eval echo "[+] Updating hosts..." ${STD_LOG_ARG}
+  eval echo "Updating hosts..." ${STD_LOG_ARG}
   
   sed -i '/^192\.168\.4\.1.*$/d' /etc/hosts
   echo "192.168.4.1 ${HOSTNAME}" >> /etc/hosts
@@ -82,13 +83,13 @@ configure_network()
 # Configure nodogsplash
 configure_nodogsplash()
 {
-
+  eval echo "Configuring nodogsplash..." ${STD_LOG_ARG}
 }
 
 # Set up and configure nginx
 configure_nginx()
 {
-  eval echo "[+] Generating self-signed SSL certificate..." ${STD_LOG_ARG}
+  eval echo "Generating self-signed SSL certificate..." ${STD_LOG_ARG}
   cp ${SCRIPT_DIR}/../root/localhost.openssl.conf /root/
 
   # Create the certificate and key
@@ -102,7 +103,7 @@ configure_nginx()
   # Change back to the script directory
   cd ${SCRIPT_DIR}
 
-  eval echo "[+] Configuring nginx..." ${STD_LOG_ARG}
+  eval echo "Configuring nginx..." ${STD_LOG_ARG}
 
   # Copy in our site config(s)
   cp ${SCRIPT_DIR}/../etc/nginx/sites-available/*.conf /etc/nginx/sites-available/
@@ -123,7 +124,7 @@ configure_nginx()
 # Enable IPv4 forwarding
 enable_forwarding()
 {
-  eval echo "[+] Enabling IPv4 forwarding..." ${STD_LOG_ARG}
+  eval echo "Enabling IPv4 forwarding..." ${STD_LOG_ARG}
 
   if [[ $(grep -e '^#net\.ipv4\.ip_forward=1$' /etc/sysctl.conf) ]]; then
     sed -i '/^#net\.ipv4\.ip_forward=1$/s/^#//' /etc/sysctl.conf
@@ -131,7 +132,7 @@ enable_forwarding()
     echo 'net.ipv4.ip_forward=1' >> /etc/sysctl.conf
   fi
 
-  eval echo "[+] Enabling localnet routing..." ${STD_LOG_ARG}
+  eval echo "Enabling localnet routing..." ${STD_LOG_ARG}
   if [[ $(grep -e '^#net\.ipv4\.conf\.all\.route_localnet=1$' /etc/sysctl.conf) ]] ; then
     sed -i '/^#net\.ipv4\.conf\.all\.route_localnet=1$/s/^#//' /etc/sysctl.conf
   else
@@ -142,16 +143,16 @@ enable_forwarding()
 # Output final information about the installation
 finalize_message()
 {
-  eval echo "[+] The media-portal-badge stack is now installed and ready to go." ${STD_LOG_ARG}
-  eval echo "[+] To alter which media to serve check these variables in the /etc/systemd/random-media-portal.env file" ${STD_LOG_ARG}
-  eval echo "[+]     MEDIA_DIR              path containing media for the portal" ${STD_LOG_ARG}
-  eval echo "[+]     MEDIA_MODE             display mode for the portal" ${STD_LOG_ARG}
+  eval echo "The media-portal-badge stack is now installed and ready to go." ${STD_LOG_ARG}
+  eval echo "To alter which media to serve check these variables in the /etc/systemd/random-media-portal.env file" ${STD_LOG_ARG}
+  eval echo "    MEDIA_DIR              path containing media for the portal" ${STD_LOG_ARG}
+  eval echo "    MEDIA_MODE             display mode for the portal" ${STD_LOG_ARG}
 }
 
 # Install dependencies
 install_dependencies()
 {
-  eval echo "[+] Installing core toolchain..." ${STD_LOG_ARG}
+  eval echo "Installing core toolchain..." ${STD_LOG_ARG}
 
   # Install core tools
   apt-get update
@@ -172,13 +173,13 @@ install_dependencies()
 # Install nodogsplash
 install_nodogsplash()
 {
-
+  eval echo "Installing nodogsplash..." ${STD_LOG_ARG}
 }
 
 # Install the random-media-portal
 install_random_media_portal()
 {
-  eval echo "[+] Installing the random-media-portal..." ${STD_LOG_ARG}
+  eval echo "Installing the random-media-portal..." ${STD_LOG_ARG}
 
   # Change to a directory for optional software
   cd /opt
@@ -205,19 +206,19 @@ install_random_media_portal()
 # Upgrade the system
 upgrade_system()
 {
-  eval echo "[+] Upgrading system..." ${STD_LOG_ARG}
+  eval echo "Upgrading system..." ${STD_LOG_ARG}
 
   apt-get update
   apt-get upgrade -y
   apt-get dist-upgrade -y
 
-  eval echo "[+] Reboot may be necessary." ${STD_LOG_ARG}
+  eval echo "Reboot may be necessary." ${STD_LOG_ARG}
 }
 
 # Set logging on
 set_logging()
 {
-  echo "[+] Running with logging option..."
+  echo "Running with logging option..."
   STD_LOG_ARG=">>${LOG_PATH}/${STD_LOG}"
 }
 
