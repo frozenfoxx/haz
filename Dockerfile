@@ -5,15 +5,13 @@ FROM ubuntu:latest
 LABEL maintainer="FrozenFOXX <frozenfoxx@churchoffoxx.net>"
 
 # Environment variables
-ENV APP_HOME /app
+ENV DEBIAN_FRONTEND "noninteractive"
 ENV HOST 0.0.0.0
 
-WORKDIR ${APP_HOME}
-
-# Add source
-COPY . /app
+# Add scripts
+COPY scripts/ /usr/local/bin/
 
 # Run the installer
-RUN /app/bin/install.sh
+RUN /usr/local/bin/install.sh
 
-ENTRYPOINT [ "./bin/entrypoint.sh" ]
+ENTRYPOINT [ "/usr/local/bin/entrypoint.sh" ]

@@ -1,9 +1,12 @@
 #!/usr/bin/env bash
 
 # Variables
+DEBIAN_FRONTEND="noninteractive"
 HOSTNAME=$(hostname)
-NODOGSPLASH=${NODOGSPLASH:-'https://github.com/nodogsplash/nodogsplash.git'}
-RANDOM_MEDIA_PORTAL=${RANDOM_MEDIA_PORTAL:-"https://gitlab.com/frozenfoxx/random-media-portal.git"}
+SCRIPT_DIR=${SCRIPT_DIR:-'/usr/local/bin/'}
+SOFTDIR=${SOFTDIR:-'/opt'}
+LOG_PATH=${LOG_PATH:-'/var/log'}
+STD_LOG=${STD_LOG:-'install_haz.log'}
 
 # Functions
 
@@ -79,12 +82,6 @@ configure_network()
   echo "192.168.4.1 ${HOSTNAME}" >> /etc/hosts
 }
 
-# Configure nodogsplash
-configure_nodogsplash()
-{
-  eval echo "Configuring nodogsplash..." ${STD_LOG_ARG}
-}
-
 # Set up and configure nginx
 configure_nginx()
 {
@@ -139,15 +136,6 @@ enable_forwarding()
   fi
 }
 
-# Output final information about the installation
-finalize_message()
-{
-  eval echo "The media-portal-badge stack is now installed and ready to go." ${STD_LOG_ARG}
-  eval echo "To alter which media to serve check these variables in the /etc/systemd/random-media-portal.env file" ${STD_LOG_ARG}
-  eval echo "    MEDIA_DIR              path containing media for the portal" ${STD_LOG_ARG}
-  eval echo "    MEDIA_MODE             display mode for the portal" ${STD_LOG_ARG}
-}
-
 # Install dependencies
 install_dependencies()
 {
@@ -169,47 +157,14 @@ install_dependencies()
   mkdir -p /data
 }
 
-# Install nodogsplash
-install_nodogsplash()
-{
-  eval echo "Installing nodogsplash..." ${STD_LOG_ARG}
-}
-
-# Install the random-media-portal
-install_random_media_portal()
-{
-  eval echo "Installing the random-media-portal..." ${STD_LOG_ARG}
-
-  # Change to a directory for optional software
-  cd /opt
-  
-  # Pull a copy of the latest random-media-portal
-  git clone ${RANDOM_MEDIA_PORTAL} random-media-portal
-  cd random-media-portal
-  bundle install --system
-
-  # Install the service file
-  cp ${SCRIPT_DIR}/../etc/systemd/system/random-media-portal.service /etc/systemd/system/
-  cp ${SCRIPT_DIR}/../etc/systemd/random-media-portal.env /etc/systemd/
-
-  # FIXME: substitute environment variables
-
-  # Reload the service
-  systemctl daemon-reload
-  systemctl enable random-media-portal.service
-
-  # Change back to the script directory
-  cd ${SCRIPT_DIR}
-}
-
 # Upgrade the system
 upgrade_system()
 {
   eval echo "Upgrading system..." ${STD_LOG_ARG}
 
   apt-get update
-  DEBIAN_FRONTEND="noninteractive" apt-get upgrade -y
-  DEBIAN_FRONTEND="noninteractive" apt-get dist-upgrade -y
+  apt-get upgrade -y
+  apt-get dist-upgrade -y
 
   eval echo "Reboot may be necessary." ${STD_LOG_ARG}
 }
@@ -235,8 +190,8 @@ usage()
 
 # Logic
 
-# Argument parsing
-while [ "$1" != "" ]; do
+## Argument parsing
+while [[ "$1" != "" ]]; do
   case $1 in
     -L | --Log )  set_logging
                   ;;
@@ -249,13 +204,11 @@ done
 check_root
 upgrade_system
 install_dependencies
-install_nodogsplash
-install_random_media_portal
+${SCRIPT_DIR}/install_nodogsplash.sh
+${SCRIPT_DIR}/install_random_media_portal.sh
 configure_nginx
 configure_network
 configure_dhcpcd
 configure_hostapd
-configure_nodogsplash
 enable_forwarding
 configure_dnsmasq
-finalize_message
