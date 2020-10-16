@@ -1,7 +1,6 @@
 #!/usr/bin/env bash
 
 # Variables
-DEBIAN_FRONTEND=noninteractive
 HOSTNAME=$(hostname)
 NODOGSPLASH=${NODOGSPLASH:-'https://github.com/nodogsplash/nodogsplash.git'}
 RANDOM_MEDIA_PORTAL=${RANDOM_MEDIA_PORTAL:-"https://gitlab.com/frozenfoxx/random-media-portal.git"}
@@ -209,8 +208,8 @@ upgrade_system()
   eval echo "Upgrading system..." ${STD_LOG_ARG}
 
   apt-get update
-  apt-get upgrade -y
-  apt-get dist-upgrade -y
+  DEBIAN_FRONTEND="noninteractive" apt-get upgrade -y
+  DEBIAN_FRONTEND="noninteractive" apt-get dist-upgrade -y
 
   eval echo "Reboot may be necessary." ${STD_LOG_ARG}
 }
