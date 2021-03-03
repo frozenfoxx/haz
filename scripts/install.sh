@@ -185,7 +185,7 @@ usage()
   echo "    RANDOM_MEDIA_PORTAL    HTTP clone target for the random-media-portal (default: https://gitlab.com/frozenfoxx/random-media-portal.git)"
   echo "  Options:"
   echo "    -h | --help            display this usage information"
-  echo "    -L | --Log             enable logging (target: '[LOG_PATH]/media_portal_badge_install.log')"
+  echo "    -L | --Log             enable logging (target: '[LOG_PATH]/install_haz.log')"
 }
 
 # Logic
@@ -206,6 +206,7 @@ upgrade_system
 install_dependencies
 ${SCRIPT_DIR}/install_nodogsplash.sh
 ${SCRIPT_DIR}/install_random_media_portal.sh
+${SCRIPT_DIR}/install_ircd-hybrid.sh
 configure_nginx
 configure_network
 configure_dhcpcd

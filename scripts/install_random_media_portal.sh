@@ -50,10 +50,10 @@ usage()
   echo "Usage: [Environment Variables] ./install.sh [-hL]"
   echo "  Environment Variables:"
   echo "    LOG_PATH               path for logs (default: '/var/log')"
-  echo "    NODOGSPLASH            Git repo for nodogsplash (default: https://github.com/nodogsplash/nodogsplash.git)"
+  echo "    RANDOM_MEDIA_PORTAL    Git repo for random-media-portal (default: https://gitlab.com/frozenfoxx/random-media-portal.git)"
   echo "  Options:"
   echo "    -h | --help            display this usage information"
-  echo "    -L | --Log             enable logging (target: '[LOG_PATH]/install_nodogsplash.log')"
+  echo "    -L | --Log             enable logging (target: '[LOG_PATH]/install_random_media_portal.log')"
 }
 
 # Logic
