@@ -35,7 +35,8 @@ install_nodogsplash()
 
   # Build a package
   cd $(basename ${NODOGSPLASH} | sed 's/\.git$//g')
-  dpkg-buildpackage
+  #dpkg-buildpackage
+  dpkg-buildpackage -b -rfakeroot -us -uc
 
   # Install package
   dpkg -i ../*.deb
