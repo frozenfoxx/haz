@@ -9,7 +9,7 @@ STD_LOG=${STD_LOG:-'install_random_media_portal.log'}
 # Functions
 
 ## Install the random-media-portal
-install_random_media_portal()
+install()
 {
   eval echo "Installing the random-media-portal..." ${STD_LOG_ARG}
 
@@ -17,8 +17,8 @@ install_random_media_portal()
   cd ${SOFTDIR}
   
   # Pull a copy of the latest random-media-portal
-  git clone ${RANDOM_MEDIA_PORTAL}
-  cd $(basename ${RANDOM_MEDIA_PORTAL} | sed 's/\.git$//g')
+  git clone ${RANDOM_MEDIA_PORTAL} ${SOFTDIR}/random-media-portal
+  cd ${SOFTDIR}/random-media-portal
   bundle install --system
 
   # Install the service file
@@ -69,5 +69,4 @@ while [[ "$1" != "" ]]; do
   shift
 done
 
-install_nodogsplash
-configure_nodogsplash
+install

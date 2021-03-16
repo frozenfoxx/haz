@@ -6,12 +6,13 @@ LABEL maintainer="FrozenFOXX <frozenfoxx@churchoffoxx.net>"
 
 # Environment variables
 ENV DEBIAN_FRONTEND "noninteractive"
+ENV HAZ_DIR "/opt/haz"
 ENV HOST 0.0.0.0
 
-# Add scripts
-COPY scripts/ /usr/local/bin/
+# Add HAZ
+COPY . ${HAZ_DIR}
 
 # Run the installer
-RUN /usr/local/bin/install.sh
+RUN ${HAZ_DIR}/scripts/deploy_docker.sh
 
-ENTRYPOINT [ "/usr/local/bin/entrypoint.sh" ]
+ENTRYPOINT [ "${HAZ_DIR}/scripts/entrypoint.sh" ]

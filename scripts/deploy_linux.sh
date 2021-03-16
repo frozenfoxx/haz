@@ -2,8 +2,8 @@
 
 # Variables
 DEBIAN_FRONTEND="noninteractive"
+HAZ_DIR=${HAZ_DIR:-'/opt/haz'}
 HOSTNAME=$(hostname)
-SCRIPT_DIR=${SCRIPT_DIR:-'/usr/local/bin/'}
 SOFTDIR=${SOFTDIR:-'/opt'}
 LOG_PATH=${LOG_PATH:-'/var/log'}
 STD_LOG=${STD_LOG:-'install_haz.log'}
@@ -26,7 +26,7 @@ configure_dhcpcd()
 
   # Backup original config and install our own
   mv /etc/dhcpcd.conf /etc/dhcpcd.conf.orig
-  cp ${SCRIPT_DIR}/../etc/dhcpcd.conf /etc/dhcpcd.conf
+  cp ${HAZ_DIR}/configs/etc/dhcpcd.conf /etc/dhcpcd.conf
 
   # Restart networking to take effect
   # service dhcpcd restart
@@ -41,7 +41,7 @@ configure_dnsmasq()
 
   # Backup original config and install our own
   mv /etc/dnsmasq.conf /etc/dnsmasq.conf.orig
-  cp ${SCRIPT_DIR}/../etc/dnsmasq.conf /etc/dnsmasq.conf
+  cp ${HAZ_DIR}/configs/etc/dnsmasq.conf /etc/dnsmasq.conf
 
   # Enable the service at boot
   systemctl enable dnsmasq
@@ -57,12 +57,12 @@ configure_hostapd()
     mv /etc/hostapd/hostapd.conf /etc/hostapd/hostapd.conf.orig
   fi
   
-  cp ${SCRIPT_DIR}/../etc/hostapd/hostapd.conf /etc/hostapd/hostapd.conf
+  cp ${HAZ_DIR}/configs/etc/hostapd/hostapd.conf /etc/hostapd/hostapd.conf
   chmod 640 /etc/hostapd/hostapd.conf
 
   # Specify a default config for hostapd
   rm /etc/default/hostapd
-  cp ${SCRIPT_DIR}/../etc/default/hostapd /etc/default/hostapd
+  cp ${HAZ_DIR}/configs/etc/default/hostapd /etc/default/hostapd
 
   # Enable the service at boot
   systemctl unmask hostapd
@@ -74,7 +74,7 @@ configure_network()
 {
   eval echo "Configuring network devices..." ${STD_LOG_ARG}
 
-  cp ${SCRIPT_DIR}/../etc/network/interfaces.d/wlan0 /etc/network/interfaces.d/wlan0
+  cp ${HAZ_DIR}/configs/etc/network/interfaces.d/wlan0 /etc/network/interfaces.d/wlan0
 
   eval echo "Updating hosts..." ${STD_LOG_ARG}
   
@@ -86,7 +86,7 @@ configure_network()
 configure_nginx()
 {
   eval echo "Generating self-signed SSL certificate..." ${STD_LOG_ARG}
-  cp ${SCRIPT_DIR}/../root/localhost.openssl.conf /root/
+  cp ${HAZ_DIR}/configs/root/localhost.openssl.conf /root/
 
   # Create the certificate and key
   cd /root
@@ -97,12 +97,12 @@ configure_nginx()
   mv localhost.key /etc/ssl/private/localhost.key
 
   # Change back to the script directory
-  cd ${SCRIPT_DIR}
+  cd ${HAZ_DIR}/scripts
 
   eval echo "Configuring nginx..." ${STD_LOG_ARG}
 
   # Copy in our site config(s)
-  cp ${SCRIPT_DIR}/../etc/nginx/sites-available/*.conf /etc/nginx/sites-available/
+  cp ${HAZ_DIR}/configs/etc/nginx/sites-available/*.conf /etc/nginx/sites-available/
 
   # Enable the new site
   ln -s /etc/nginx/sites-available/localhost.conf /etc/nginx/sites-enabled/localhost.conf
@@ -179,10 +179,9 @@ set_logging()
 # Display usage information
 usage()
 {
-  echo "Usage: [Environment Variables] ./install.sh [-hL]"
+  echo "Usage: [Environment Variables] ./deploy_linux.sh [-hL]"
   echo "  Environment Variables:"
   echo "    LOG_PATH               path for logs (default: '/var/log')"
-  echo "    RANDOM_MEDIA_PORTAL    HTTP clone target for the random-media-portal (default: https://gitlab.com/frozenfoxx/random-media-portal.git)"
   echo "  Options:"
   echo "    -h | --help            display this usage information"
   echo "    -L | --Log             enable logging (target: '[LOG_PATH]/install_haz.log')"
@@ -204,9 +203,9 @@ done
 check_root
 upgrade_system
 install_dependencies
-${SCRIPT_DIR}/install_nodogsplash.sh
-${SCRIPT_DIR}/install_random_media_portal.sh
-${SCRIPT_DIR}/install_ircd-hybrid.sh
+${HAZ_DIR}/scripts/install_nodogsplash.sh
+${HAZ_DIR}/scripts/install_random_media_portal.sh
+${HAZ_DIR}/scripts/install_ircd-hybrid.sh
 configure_nginx
 configure_network
 configure_dhcpcd

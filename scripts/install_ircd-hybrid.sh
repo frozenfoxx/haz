@@ -9,8 +9,7 @@ STD_LOG=${STD_LOG:-'install_ircd-hybrid.log'}
 # Functions
 
 ## Configure the server
-
-configure_ircd-hybrid()
+configure()
 {
   eval echo "Setting password..." ${STD_LOG_ARG}
   if [[ ${PASSWORD} == '' ]]; then
@@ -22,7 +21,7 @@ configure_ircd-hybrid()
 }
 
 ## Install the ircd-hybrid server
-install_ircd-hybrid()
+install()
 {
   eval echo "Installing ircd-hybrid..." ${STD_LOG_ARG}
 
@@ -65,5 +64,5 @@ while [[ "$1" != "" ]]; do
   shift
 done
 
-install_ircd-hybrid
-configure_ircd-hybrid
+install
+configure

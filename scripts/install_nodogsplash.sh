@@ -8,14 +8,30 @@ STD_LOG=${STD_LOG:-'install_nodogsplash.log'}
 
 # Functions
 
+## Cleanup nodgosplash installation
+cleanup()
+{
+  # Remove tools
+  apt-get autoremove -y \
+    build-essential \
+    debhelper \
+    devscripts \
+    dh-systemd \
+    libmicrohttpd-dev
+
+  # Remove build directory and package
+  rm -rf ${SOFTDIR}/nodogsplash
+  rm ${SOFTDIR}/*.deb
+}
+
 ## Configure nodogsplash
-configure_nodogsplash()
+configure()
 {
   eval echo "Configuring nodogsplash..." ${STD_LOG_ARG}
 }
 
 ## Install nodogsplash
-install_nodogsplash()
+install()
 {
   eval echo "Installing nodogsplash..." ${STD_LOG_ARG}
 
@@ -31,10 +47,10 @@ install_nodogsplash()
     libmicrohttpd-dev
 
   # Retrieve nodogsplash
-  git clone ${NODOGSPLASH}
+  git clone ${NODOGSPLASH} ${SOFTDIR}/nodogsplash
 
   # Build a package
-  cd $(basename ${NODOGSPLASH} | sed 's/\.git$//g')
+  cd ${SOFTDIR}/nodogsplash
   #dpkg-buildpackage
   dpkg-buildpackage -b -rfakeroot -us -uc
 
@@ -74,5 +90,6 @@ while [[ "$1" != "" ]]; do
   shift
 done
 
-install_nodogsplash
-configure_nodogsplash
+install
+configure
+cleanup
