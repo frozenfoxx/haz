@@ -4,7 +4,7 @@
 HAZ_DIR=${HAZ_DIR:-'/opt/haz'}
 MEDIA_DIRECTORY=${MEDIA_DIRECTORY:'/data'}
 MEDIA_MODE=${MEDIA_MODE:-'video'}
-RANDOM_MEDIA_PORTAL=${RANDOM_MEDIA_PORTAL:-"https://gitlab.com/frozenfoxx/random-media-portal.git"}
+RANDOM_MEDIA_PORTAL=${RANDOM_MEDIA_PORTAL:-"https://github.com/frozenfoxx/random-media-portal.git"}
 SOFTDIR=${SOFTDIR:-'/opt'}
 LOG_PATH=${LOG_PATH:-'/var/log'}
 STD_LOG=${STD_LOG:-'install_random_media_portal.log'}
@@ -96,7 +96,7 @@ usage()
   echo "Usage: [Environment Variables] ./install.sh [-hL]"
   echo "  Environment Variables:"
   echo "    LOG_PATH               path for logs (default: '/var/log')"
-  echo "    RANDOM_MEDIA_PORTAL    Git repo for random-media-portal (default: https://gitlab.com/frozenfoxx/random-media-portal.git)"
+  echo "    RANDOM_MEDIA_PORTAL    Git repo for random-media-portal (default: https://github.com/frozenfoxx/random-media-portal.git)"
   echo "  Options:"
   echo "    -h | --help            display this usage information"
   echo "    -L | --Log             enable logging (target: '[LOG_PATH]/install_random_media_portal.log')"
