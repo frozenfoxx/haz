@@ -47,7 +47,7 @@ configure_hostapd()
   if [[ -f /etc/hostapd/hostapd.conf ]]; then
     mv /etc/hostapd/hostapd.conf /etc/hostapd/hostapd.conf.orig
   fi
-  
+
   cp ${HAZ_DIR}/configs/etc/hostapd/hostapd.conf /etc/hostapd/hostapd.conf
   chmod 640 /etc/hostapd/hostapd.conf
 
@@ -102,10 +102,6 @@ configure_nginx()
   if [[ -f /etc/nginx/sites-enabled/default ]]; then
     rm /etc/nginx/sites-enabled/default
   fi
-
-  # Start the service
-  systemctl start nginx
-  systemctl enable nginx
 }
 
 # Enable IPv4 forwarding
@@ -125,27 +121,6 @@ enable_forwarding()
   else
     echo net.ipv4.conf.all.route_localnet=1 >> /etc/sysctl.conf
   fi
-}
-
-# Install dependencies
-install_dependencies()
-{
-  eval echo "Installing core toolchain..." ${STD_LOG_ARG}
-
-  # Install core tools
-  apt-get update
-  apt-get install -y \
-    git \
-    dnsmasq \
-    hostapd \
-    nginx \
-    ruby
-
-  # Install gem dependencies
-  gem install bundler
-
-  # Create directory for holding media if it doesn't exist already
-  mkdir -p /data
 }
 
 # Set logging on
@@ -179,7 +154,6 @@ while [[ "$1" != "" ]]; do
   shift
 done
 
-install_dependencies
 ${HAZ_DIR}/scripts/install_nodogsplash.sh
 ${HAZ_DIR}/scripts/install_random_media_portal.sh
 ${HAZ_DIR}/scripts/install_ircd-hybrid.sh
