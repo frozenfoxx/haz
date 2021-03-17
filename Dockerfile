@@ -32,6 +32,10 @@ COPY . ${HAZ_DIR}
 # Run the installer
 RUN ${HAZ_DIR}/scripts/deploy_docker.sh
 
+# Clean up apt
+RUN apt-get clean && \
+  rm -rf /var/lib/apt/lists/*
+
 # Set up supervisor
 COPY configs/etc/supervisor/conf.d/supervisord.conf /etc/supervisor/conf.d/supervisord.conf
 

@@ -4,6 +4,11 @@
 DEBIAN_FRONTEND="noninteractive"
 HAZ_DIR=${HAZ_DIR:-'/opt/haz'}
 HOSTNAME=$(hostname)
+NET_CHANNEL=${NET_CHANNEL:-'6'}
+NET_DRIVER=${NET_DRIVER:-'nl80211'}
+NET_HWMODE=${NET_HWMODE:-'g'}
+NET_IFACE=${NET_IFACE:-'wlan0'}
+NET_SSID=${NET_SSID:-'haz'}
 SOFTDIR=${SOFTDIR:-'/opt'}
 LOG_PATH=${LOG_PATH:-'/var/log'}
 STD_LOG=${STD_LOG:-'install_haz.log'}
@@ -18,11 +23,6 @@ configure_dhcpcd()
   # Backup original config and install our own
   mv /etc/dhcpcd.conf /etc/dhcpcd.conf.orig
   cp ${HAZ_DIR}/configs/etc/dhcpcd.conf /etc/dhcpcd.conf
-
-  # Restart networking to take effect
-  # service dhcpcd restart
-  # ip link set wlan0 down
-  # ip link set wlan0 up
 }
 
 # Set up and configure dnsmasq
@@ -43,21 +43,13 @@ configure_hostapd()
 {
   eval echo "Configuring hostapd..." ${STD_LOG_ARG}
 
-  # Backup original config and install our own
-  if [[ -f /etc/hostapd/hostapd.conf ]]; then
-    mv /etc/hostapd/hostapd.conf /etc/hostapd/hostapd.conf.orig
-  fi
-
-  cp ${HAZ_DIR}/configs/etc/hostapd/hostapd.conf /etc/hostapd/hostapd.conf
+  # Build the config for hostapd
+  envsubst < ${HAZ_DIR}/templates/hostapd.conf.tmpl > /etc/hostapd/hostapd.conf
   chmod 640 /etc/hostapd/hostapd.conf
 
-  # Specify a default config for hostapd
+  # Specify a service config for hostapd
   rm /etc/default/hostapd
   cp ${HAZ_DIR}/configs/etc/default/hostapd /etc/default/hostapd
-
-  # Enable the service at boot
-  systemctl unmask hostapd
-  systemctl enable hostapd
 }
 
 # Set up the network devices

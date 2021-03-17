@@ -5,7 +5,7 @@ Wants=nginx.service
 [Service]
 Type=simple
 WorkingDirectory=/opt/random-media-portal
-EnvironmentFile=/etc/systemd/random-media-portal.env
+EnvironmentFile=/etc/default/random-media-portal
 ExecStart=/opt/random-media-portal/serve
 Restart=always
 TimeoutSec=10

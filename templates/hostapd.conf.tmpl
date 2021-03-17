@@ -1,17 +1,17 @@
 # Interface to set up
-interface=wlan0
+interface=${NET_IFACE}
 
 # Which device driver
-driver=nl80211
+driver=${NET_DRIVER}
 
 # Broadcast SSID
-ssid=haz
+ssid=${NET_SSID}
 
 # WiFi band, 2.4Ghz (b|g), 5Ghz (a), 60Ghz (ad)
-hw_mode=g
+hw_mode=${NET_HWMODE}
 
 # Which WiFi channel to use
-channel=6
+channel=${NET_CHANNEL}
 
 # Enable 802.11n
 ieee80211n=1

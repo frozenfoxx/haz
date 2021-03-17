@@ -1,12 +1,31 @@
 #!/usr/bin/env bash
 
 # Variables
+HAZ_DIR=${HAZ_DIR:-'/opt/haz'}
+MEDIA_DIRECTORY=${MEDIA_DIRECTORY:'/data'}
+MEDIA_MODE=${MEDIA_MODE:-'video'}
 RANDOM_MEDIA_PORTAL=${RANDOM_MEDIA_PORTAL:-"https://gitlab.com/frozenfoxx/random-media-portal.git"}
 SOFTDIR=${SOFTDIR:-'/opt'}
 LOG_PATH=${LOG_PATH:-'/var/log'}
 STD_LOG=${STD_LOG:-'install_random_media_portal.log'}
 
 # Functions
+
+## Build the environment file
+build_environment()
+{
+  envsubst < ${HAZ_DIR}/templates/random-media-portal.tmpl > /etc/default/random-media-portal
+  chmod 640 /etc/default/random-media-portal
+}
+
+## Display finish message
+finish_message()
+{
+  eval echo "The media-portal-badge stack is now installed and ready to go." ${STD_LOG_ARG}
+  eval echo "To alter which media to serve check these variables in the /etc/default/random-media-portal file" ${STD_LOG_ARG}
+  eval echo "    MEDIA_DIRECTORY        path containing media for the portal" ${STD_LOG_ARG}
+  eval echo "    MEDIA_MODE             display mode for the portal" ${STD_LOG_ARG}
+}
 
 ## Install random-media-portal
 install()
@@ -36,20 +55,8 @@ install_docker()
   cd ${SOFTDIR}/random-media-portal
   bundle install --system
 
-  # Install the service file
-  cp ./etc/systemd/system/random-media-portal.service /etc/systemd/system/
-  cp ./etc/systemd/random-media-portal.env /etc/systemd/
-
-  # FIXME: substitute environment variables
-
-  # Reload the service
-  systemctl daemon-reload
-  systemctl enable random-media-portal.service
-
-  eval echo "The media-portal-badge stack is now installed and ready to go." ${STD_LOG_ARG}
-  eval echo "To alter which media to serve check these variables in the /etc/systemd/random-media-portal.env file" ${STD_LOG_ARG}
-  eval echo "    MEDIA_DIR              path containing media for the portal" ${STD_LOG_ARG}
-  eval echo "    MEDIA_MODE             display mode for the portal" ${STD_LOG_ARG}
+  # Build environment
+  build_environment
 }
 
 ## Install for Linux
@@ -66,19 +73,14 @@ install_linux()
   bundle install --system
 
   # Install the service file
-  cp ./etc/systemd/system/random-media-portal.service /etc/systemd/system/
-  cp ./etc/systemd/random-media-portal.env /etc/systemd/
+  cp ${HAZ_DIR}/configs/etc/systemd/system/random-media-portal.service /etc/systemd/system/
 
-  # FIXME: substitute environment variables
+  # Build environmenet
+  build_environment
 
   # Reload the service
   systemctl daemon-reload
   systemctl enable random-media-portal.service
-
-  eval echo "The media-portal-badge stack is now installed and ready to go." ${STD_LOG_ARG}
-  eval echo "To alter which media to serve check these variables in the /etc/systemd/random-media-portal.env file" ${STD_LOG_ARG}
-  eval echo "    MEDIA_DIR              path containing media for the portal" ${STD_LOG_ARG}
-  eval echo "    MEDIA_MODE             display mode for the portal" ${STD_LOG_ARG}
 }
 
 ## Set logging on
@@ -114,3 +116,4 @@ while [[ "$1" != "" ]]; do
 done
 
 install
+finish_message
