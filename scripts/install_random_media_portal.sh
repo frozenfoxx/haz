@@ -13,10 +13,21 @@ STD_LOG=${STD_LOG:-'install_random_media_portal.log'}
 # Functions
 
 ## Build the environment file
-build_environment()
+build_environment_file()
 {
   envsubst < ${HAZ_DIR}/templates/random-media-portal.tmpl > /etc/default/random-media-portal
   chmod 640 /etc/default/random-media-portal
+}
+
+## Configure systemd
+configure_systemd()
+{
+  # Install the service file
+  cp ${HAZ_DIR}/configs/etc/systemd/system/random-media-portal.service /etc/systemd/system/
+
+  # Reload the service
+  systemctl daemon-reload
+  systemctl enable random-media-portal.service
 }
 
 ## Display finish message
@@ -31,21 +42,6 @@ finish_message()
 ## Install random-media-portal
 install()
 {
-  if [[ ${OSTYPE} == "linux-gnu"* ]]; then
-    if [[ ${DOCKER} == 'true' ]]; then
-      install_docker
-    else
-      install_linux
-    fi
-  else
-    echo "Platform not supported."
-    exit 1
-  fi
-}
-
-## Install for Docker
-install_docker()
-{
   eval echo "Installing the random-media-portal..." ${STD_LOG_ARG}
 
   # Change to a directory for optional software
@@ -54,34 +50,19 @@ install_docker()
   # Pull a copy of the latest random-media-portal
   git clone ${RANDOM_MEDIA_PORTAL} ${SOFTDIR}/random-media-portal
   cd ${SOFTDIR}/random-media-portal
-  bundle install --system
+
+  # Update Ruby environment
+  update_ruby_environment
 
   # Build environment
-  build_environment
-}
+  build_environment_file
 
-## Install for Linux
-install_linux()
-{
-  eval echo "Installing the random-media-portal..." ${STD_LOG_ARG}
-
-  # Change to a directory for optional software
-  cd ${SOFTDIR}
-  
-  # Pull a copy of the latest random-media-portal
-  git clone ${RANDOM_MEDIA_PORTAL} ${SOFTDIR}/random-media-portal
-  cd ${SOFTDIR}/random-media-portal
-  bundle install --system
-
-  # Install the service file
-  cp ${HAZ_DIR}/configs/etc/systemd/system/random-media-portal.service /etc/systemd/system/
-
-  # Build environmenet
-  build_environment
-
-  # Reload the service
-  systemctl daemon-reload
-  systemctl enable random-media-portal.service
+  # Check if systemd needs to be configured
+  if [[ ${OSTYPE} == "linux-gnu"* ]]; then
+    if [[ ${DOCKER} == 'false' ]]; then
+      configure_systemd
+    fi
+  fi
 }
 
 ## Set logging on
@@ -89,6 +70,18 @@ set_logging()
 {
   echo "Running with logging option..."
   STD_LOG_ARG=">>${LOG_PATH}/${STD_LOG}"
+}
+
+## Update Ruby environment
+update_ruby_environment()
+{
+  gem update --system
+  gem install bundler
+
+  bundle install
+  bundle update --bundler
+  bundle config set system 'true'
+  bundle install
 }
 
 ## Display usage information
