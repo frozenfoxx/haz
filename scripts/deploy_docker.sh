@@ -147,7 +147,7 @@ while [[ "$1" != "" ]]; do
 done
 
 ${HAZ_DIR}/scripts/install_nodogsplash.sh
-${HAZ_DIR}/scripts/install_random_media_portal.sh
+${HAZ_DIR}/scripts/install_random_media_portal.sh -docker
 ${HAZ_DIR}/scripts/install_ircd-hybrid.sh
 configure_nginx
 configure_network

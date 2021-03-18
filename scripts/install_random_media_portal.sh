@@ -1,6 +1,7 @@
 #!/usr/bin/env bash
 
 # Variables
+DOCKER=${DOCKER:-'false'}
 HAZ_DIR=${HAZ_DIR:-'/opt/haz'}
 MEDIA_DIRECTORY=${MEDIA_DIRECTORY:'/data'}
 MEDIA_MODE=${MEDIA_MODE:-'video'}
@@ -31,7 +32,7 @@ finish_message()
 install()
 {
   if [[ ${OSTYPE} == "linux-gnu"* ]]; then
-    if [[ $(grep -q docker /proc/1/cgroup) ]]; then
+    if [[ ${DOCKER} == 'true' ]]; then
       install_docker
     else
       install_linux
@@ -107,10 +108,12 @@ usage()
 ## Argument parsing
 while [[ "$1" != "" ]]; do
   case $1 in
-    -L | --Log )  set_logging
+    -docker )     DOCKER='true'
                   ;;
     -h | --help ) usage
                   exit 0
+                  ;;
+    -L | --Log )  set_logging
   esac
   shift
 done
