@@ -19,9 +19,6 @@ STD_LOG=${STD_LOG:-'install_haz.log'}
 configure_dhcpcd()
 {
   eval echo "Configuring dhcpcd..." ${STD_LOG_ARG}
-
-  # Backup original config and install our own
-  mv /etc/dhcpcd.conf /etc/dhcpcd.conf.orig
   cp ${HAZ_DIR}/configs/etc/dhcpcd.conf /etc/dhcpcd.conf
 }
 
@@ -29,13 +26,7 @@ configure_dhcpcd()
 configure_dnsmasq()
 {
   eval echo "Configuring dnsmasq..." ${STD_LOG_ARG}
-
-  # Backup original config and install our own
-  mv /etc/dnsmasq.conf /etc/dnsmasq.conf.orig
-  cp ${HAZ_DIR}/configs/etc/dnsmasq.conf /etc/dnsmasq.conf
-
-  # Enable the service at boot
-  systemctl enable dnsmasq
+  envsubst < ${HAZ_DIR}/templates/dnsmasq.conf.tmpl > /etc/dnsmasq.conf
 }
 
 # Set up and configure hostapd
