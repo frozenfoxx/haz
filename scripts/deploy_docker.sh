@@ -57,6 +57,9 @@ configure_network()
 {
   eval echo "Configuring network devices..." ${STD_LOG_ARG}
 
+  # Create network interfaces directory
+  mkdir -p /etc/network/interfaces.d
+
   cp ${HAZ_DIR}/configs/etc/network/interfaces.d/wlan0 /etc/network/interfaces.d/wlan0
 
   eval echo "Updating hosts..." ${STD_LOG_ARG}
