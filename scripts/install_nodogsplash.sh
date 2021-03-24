@@ -28,6 +28,13 @@ cleanup()
 configure()
 {
   eval echo "Configuring nodogsplash..." ${STD_LOG_ARG}
+
+  if [ ! /etc/nodogsplash ]; then
+    eval echo "Creating configuration directory..." ${STD_LOG_ARG}
+    mkdir -p /etc/nodogsplash
+  fi
+
+  envsubst < ${HAZ_DIR}/templates/nodogsplash.conf.tmpl > /etc/nodogsplash/nodogsplash.conf
 }
 
 ## Install nodogsplash

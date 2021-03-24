@@ -4,6 +4,7 @@
 PLATFORM=$(uname -s)
 MYUSER=$(whoami)
 HAZ=${HAZ:-"https://github.com/frozenfoxx/haz.git"}
+HAZ_DIR=${HAZ_DIR:-'/opt/haz'}
 SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
 
 # Functions
@@ -89,7 +90,7 @@ deploy_haz()
 {
   echo "Cloning latest haz..."
 
-  git clone ${haz} /media/${MYUSER}/rootfs/home/pi/haz
+  git clone ${haz} /media/${MYUSER}/rootfs${HAZ_DIR}
 }
 
 # Show the user what must be done next
@@ -115,6 +116,7 @@ usage()
   echo "Usage: [Environment Variables] ./deploy.sh [-h]"
   echo "  Environment Variables:"
   echo "    HAZ                    HTTP clone target for the random-media-portal (default: https://github.com/frozenfoxx/haz)"
+  echo "    HAZ_DIR                directory to clone HAZ to (default: /opt/haz)"
   echo "  Options:"
   echo "    -h | --help            display this usage information"
 }
