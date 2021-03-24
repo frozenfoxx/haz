@@ -10,6 +10,7 @@ ENV HAZ_DIR "/opt/haz"
 ENV HAZ_NAME "haz"
 ENV HOST 0.0.0.0
 ENV NET_GATEWAY 192.168.4.1
+ENV NET_DHCPRANGE "192.168.4.100,192.168.4.150,5m"
 
 # Install core dependencies
 RUN apt-get update && \
