@@ -167,7 +167,7 @@ FirewallRuleSet users-to-router {
 # and in status output from ndsctl, but otherwise doesn't matter.
 # If none is supplied, the value "NoDogSplash" is used.
 #
-# GatewayName NoDogSplash
+GatewayName ${HAZ_NAME}
 
 # Parameter: GatewayAddress
 # Default: Discovered from GatewayInterface
@@ -177,7 +177,7 @@ FirewallRuleSet users-to-router {
 # the GatewayInterface.  This is the address that the Nodogsplash
 # server listens on.
 #
-GatewayAddress 192.168.4.1
+GatewayAddress ${NET_GATEWAY}
 
 # Parameter: StatusPage
 # Default: status.html
