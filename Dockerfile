@@ -7,7 +7,9 @@ LABEL maintainer="FrozenFOXX <frozenfoxx@churchoffoxx.net>"
 # Environment variables
 ENV DEBIAN_FRONTEND "noninteractive"
 ENV HAZ_DIR "/opt/haz"
+ENV HAZ_NAME "haz"
 ENV HOST 0.0.0.0
+ENV NET_GATEWAY 192.168.4.1
 
 # Install core dependencies
 RUN apt-get update && \
