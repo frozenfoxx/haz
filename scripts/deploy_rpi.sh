@@ -5,7 +5,6 @@ PLATFORM=$(uname -s)
 MYUSER=$(whoami)
 HAZ=${HAZ:-"https://github.com/frozenfoxx/haz.git"}
 HAZ_DIR=${HAZ_DIR:-'/opt/haz'}
-SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
 
 # Functions
 
@@ -69,8 +68,7 @@ configure_wifi()
   fi
 
   cp ./wpa_supplicant.conf /media/${MYUSER}/boot/wpa_supplicant.conf
-  sed -i "s/DEPLOY_SSID/${DEPLOY_SSID}/g" /media/${MYUSER}/boot/wpa_supplicant.conf
-  sed -i "s/DEPLOY_PSK/${DEPLOY_PSK}/g" /media/${MYUSER}/boot/wpa_supplicant.conf
+  envsubst < ${HAZ_DIR}/templates/wpa_supplicant.conf.tmpl > /media/${MYUSER}/boot/wpa_supplicant.conf
 }
 
 # Copy over data files
@@ -94,7 +92,7 @@ deploy_haz()
 }
 
 # Show the user what must be done next
-display_further_instructions()
+display_instructions()
 {
   echo "The HAZ is now almost complete. To complete installation perform the following:"
   echo "  Insert the microSD card into the Raspberry Pi."
@@ -105,7 +103,7 @@ display_further_instructions()
   echo "  * (RPi) Update the keymap/locale (likely US)."
   echo "  * (RPi) Update the pi user's password."
   echo "  (RPi) Logout, relogin."
-  echo "  (RPi) cd /home/pi/haz/scripts && sudo ./install.sh"
+  echo "  (RPi) cd ${HAZ_DIR}/scripts && sudo ./deploy_linux.sh"
   echo "  After installation has completed reboot the Raspberry Pi."
   echo "  With another device, connect to the SSID."
 }
@@ -113,7 +111,7 @@ display_further_instructions()
 # Display usage information
 usage()
 {
-  echo "Usage: [Environment Variables] ./deploy.sh [-h]"
+  echo "Usage: [Environment Variables] ./deploy_rpi.sh [-h]"
   echo "  Environment Variables:"
   echo "    HAZ                    HTTP clone target for the random-media-portal (default: https://github.com/frozenfoxx/haz)"
   echo "    HAZ_DIR                directory to clone HAZ to (default: /opt/haz)"
@@ -138,4 +136,4 @@ configure_wifi
 configure_hostname
 deploy_haz
 deploy_data
-display_further_instructions
+display_instructions
