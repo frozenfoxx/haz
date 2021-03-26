@@ -22,7 +22,7 @@ STD_LOG=${STD_LOG:-'install_haz.log'}
 configure_dhcpcd()
 {
   eval echo "Configuring dhcpcd..." ${STD_LOG_ARG}
-  cp ${HAZ_DIR}/configs/etc/dhcpcd.conf /etc/dhcpcd.conf
+  envsubst < ${HAZ_DIR}/templates/dhcpcd.conf.tmpl > /etc/dhcpcd.conf
 }
 
 # Set up and configure dnsmasq
