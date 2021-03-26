@@ -5,6 +5,7 @@ PLATFORM=$(uname -s)
 MYUSER=$(whoami)
 HAZ=${HAZ:-"https://github.com/frozenfoxx/haz.git"}
 HAZ_DIR=${HAZ_DIR:-'/opt/haz'}
+HAZ_NAME=${HAZ_NAME:-'haz'}
 
 # Functions
 

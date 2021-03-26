@@ -2,7 +2,7 @@
 interface=${NET_IFACE}
 
 # Same as router
-listen-address=192.168.4.1
+listen-address=${NET_GATEWAY}
 
 # Bind to interfaces to limit traffic
 bind-interfaces
@@ -14,7 +14,7 @@ domain-needed
 bogus-priv
 
 # 50 client addresses, 5 minute lease
-dhcp-range=192.168.4.100,192.168.4.150,5m
+dhcp-range=${NET_DHCPRANGE}
 
 # Forward all traffic to the router
-address=/#/192.168.4.1
+address=/#/${NET_GATEWAY}

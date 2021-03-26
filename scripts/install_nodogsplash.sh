@@ -1,6 +1,9 @@
 #!/usr/bin/env bash
 
 # Variables
+HAZ_NAME=${HAZ_NAME:-'haz'}
+NET_GATEWAY=${NET_GATEWAY:-'192.168.4.1'}
+NET_IFACE=${NET_IFACE:-'wlan0'}
 NODOGSPLASH=${NODOGSPLASH:-'https://github.com/nodogsplash/nodogsplash.git'}
 SOFTDIR=${SOFTDIR:-'/opt'}
 LOG_PATH=${LOG_PATH:-'/var/log'}
