@@ -4,7 +4,6 @@
 DEBIAN_FRONTEND="noninteractive"
 HAZ_DIR=${HAZ_DIR:-'/opt/haz'}
 HAZ_NAME=${HAZ_NAME:-'haz'}
-HOSTNAME=$(hostname)
 NET_CHANNEL=${NET_CHANNEL:-'6'}
 NET_DHCPRANGE=${NET_DHCPRANGE:-'192.168.4.100,192.168.4.150,5m'}
 NET_DRIVER=${NET_DRIVER:-'nl80211'}
@@ -35,8 +34,8 @@ configure_dhcpcd()
 
   # Restart networking to take effect
   # service dhcpcd restart
-  # ip link set wlan0 down
-  # ip link set wlan0 up
+  # ip link set ${NET_IFACE} down
+  # ip link set ${NET_IFACE} up
 }
 
 # Set up and configure dnsmasq
@@ -78,13 +77,13 @@ configure_network()
     mkdir -p /etc/network/interfaces.d
   fi
 
-  cp ${HAZ_DIR}/configs/etc/network/interfaces.d/wlan0 /etc/network/interfaces.d/wlan0
+  cp ${HAZ_DIR}/configs/etc/network/interfaces.d/${NET_IFACE} /etc/network/interfaces.d/${NET_IFACE}
 
   eval echo "Updating hosts..." ${STD_LOG_ARG}
   
   # FIXME: this line will also strip similar lines to the gateway
   sed -i "/^${NET_GATEWAY}.*$/d" /etc/hosts
-  echo "${NET_GATEWAY} ${HOSTNAME}" >> /etc/hosts
+  echo "${NET_GATEWAY} ${HAZ_NAME}" >> /etc/hosts
 }
 
 # Set up and configure nginx

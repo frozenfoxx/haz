@@ -12,18 +12,10 @@ HAZ_NAME=${HAZ_NAME:-'haz'}
 # Configure the hostname
 configure_hostname()
 {
-  DEPLOY_HOSTNAME=$(whiptail --title "Hostname" --inputbox "Input a hostname" 10 40 3>&1 1>&2 2>&3)
-
-  # Check for if the user cancelled
-  if [[ ${DEPLOY_HOSTNAME} == '' ]]; then
-    eval echo "[!] No hostname entered, terminating..."
-    exit 1
-  fi
-
   echo "Setting hostname..."
-  sudo sed -i "s/raspberrypi/${DEPLOY_HOSTNAME}/g" /media/${MYUSER}/rootfs/etc/hosts
-  sudo sed -i "s/raspberrypi/${DEPLOY_HOSTNAME}/g" /media/${MYUSER}/rootfs/etc/hostname
-  echo ${DEPLOY_HOSTNAME} > /media/${MYUSER}/boot/hostnames
+  sudo sed -i "s/raspberrypi/${HAZ_NAME}/g" /media/${MYUSER}/rootfs/etc/hosts
+  sudo sed -i "s/raspberrypi/${HAZ_NAME}/g" /media/${MYUSER}/rootfs/etc/hostname
+  echo ${HAZ_NAME} > /media/${MYUSER}/boot/hostnames
 }
 
 # Ensure SSH is enabled at boot
@@ -116,6 +108,7 @@ usage()
   echo "  Environment Variables:"
   echo "    HAZ                    HTTP clone target for the random-media-portal (default: https://github.com/frozenfoxx/haz)"
   echo "    HAZ_DIR                directory to clone HAZ to (default: /opt/haz)"
+  echo "    HAZ_NAME               name to deploy the HAZ as (default: haz)"
   echo "  Options:"
   echo "    -h | --help            display this usage information"
 }

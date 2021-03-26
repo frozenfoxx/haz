@@ -4,7 +4,6 @@
 DEBIAN_FRONTEND="noninteractive"
 HAZ_DIR=${HAZ_DIR:-'/opt/haz'}
 HAZ_NAME=${HAZ_NAME:-'haz'}
-HOSTNAME=$(hostname)
 NET_CHANNEL=${NET_CHANNEL:-'6'}
 NET_DHCPRANGE=${NET_DHCPRANGE:-'192.168.4.100,192.168.4.150,5m'}
 NET_DRIVER=${NET_DRIVER:-'nl80211'}
@@ -58,8 +57,9 @@ configure_network()
 
   eval echo "Updating hosts..." ${STD_LOG_ARG}
   
-  sed -i '/^192\.168\.4\.1.*$/d' /etc/hosts
-  echo "192.168.4.1 ${HOSTNAME}" >> /etc/hosts
+  # FIXME: this line will also strip similar lines to the gateway
+  sed -i "/^${NET_GATEWAY}.*$/d" /etc/hosts
+  echo "${NET_GATEWAY} ${HAZ_NAME}" >> /etc/hosts
 }
 
 # Set up and configure nginx
