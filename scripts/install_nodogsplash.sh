@@ -62,7 +62,6 @@ install()
 
   # Build a package
   cd ${SOFTDIR}/nodogsplash
-  #dpkg-buildpackage
   dpkg-buildpackage -b -rfakeroot -us -uc
 
   # Install package
