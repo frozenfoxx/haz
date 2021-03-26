@@ -1,6 +1,7 @@
 #!/usr/bin/env bash
 
 # Variables
+HAZ_DIR=${HAZ_DIR:-'/opt/haz'}
 HAZ_NAME=${HAZ_NAME:-'haz'}
 NET_GATEWAY=${NET_GATEWAY:-'192.168.4.1'}
 NET_IFACE=${NET_IFACE:-'wlan0'}
