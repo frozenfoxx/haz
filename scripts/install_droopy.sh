@@ -35,7 +35,7 @@ finish_message()
 {
   eval echo "Droopy is now installed and ready to go." ${STD_LOG_ARG}
   eval echo "To alter which media to serve check these variables in the /etc/default/droopy file" ${STD_LOG_ARG}
-  eval echo "    DROOPY_DIRECTORY       path containing uploads" ${STD_LOG_ARG}
+  eval echo "    DROOPY_DIR             path containing uploads" ${STD_LOG_ARG}
   eval echo "    DROOPY_PORT            port for the server" ${STD_LOG_ARG}
 }
 
