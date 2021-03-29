@@ -54,7 +54,7 @@ configure_hostapd()
   eval echo "Configuring hostapd..." ${STD_LOG_ARG}
   
   # Build the config for hostapd
-  envsubst < ${HAZ_DIR}/templates/hostapd.conf.tmpl > /etc/hostapd/hostapd.conf
+  envsubst < ${HAZ_DIR}/etc/hostapd/hostapd.conf.tmpl > /etc/hostapd/hostapd.conf
   chmod 640 /etc/hostapd/hostapd.conf
 
   # Specify a service config for hostapd
