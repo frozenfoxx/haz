@@ -1,0 +1,41 @@
+# Interface to set up
+interface=${NET_IFACE}
+
+# Which device driver
+driver=${NET_DRIVER}
+
+# Broadcast SSID
+ssid=${NET_SSID}
+
+# WiFi band, 2.4Ghz (b|g), 5Ghz (a), 60Ghz (ad)
+hw_mode=${NET_HWMODE}
+
+# Which WiFi channel to use
+channel=${NET_CHANNEL}
+
+# Enable 802.11n
+ieee80211n=1
+
+# Enable WMM
+wmm_enabled=1
+
+# Accept all client MAC addresses
+macaddr_acl=0
+
+# Require clients to know the network SSID
+ignore_broadcast_ssid=0
+
+# Use WPA encryption
+#auth_algs=1
+
+# WPA encryption type
+#wpa=2
+
+# WPA key management scheme
+#wpa_key_mgmt=WPA-PSK
+
+# Passphrase
+#wpa_passphrase=notawindowcleaner
+
+# Use AES, instead of TKIP
+rsn_pairwise=CCMP
