@@ -79,12 +79,15 @@ configure_nginx()
   # Change back to the script directory
   cd ${HAZ_DIR}/scripts
 
+  eval echo "Configuring nginx templates..." ${STD_LOG_ARG}
+  envsubst < ${HAZ_DIR}/configs/etc/nginx/sites-available/localhost.conf.tmpl > ${HAZ_DIR}/configs/etc/nginx/sites-available/localhost.conf
+
   eval echo "Configuring nginx..." ${STD_LOG_ARG}
 
   # Copy in our site config(s)
   cp ${HAZ_DIR}/configs/etc/nginx/sites-available/*.conf /etc/nginx/sites-available/
 
-  # Enable the new site
+  # Enable the new sites
   ln -s /etc/nginx/sites-available/localhost.conf /etc/nginx/sites-enabled/localhost.conf
 
   # Disable the default welcome
