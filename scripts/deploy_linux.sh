@@ -103,6 +103,9 @@ configure_nginx()
   # Change back to the script directory
   cd ${HAZ_DIR}/scripts
 
+  eval echo "Configuring nginx templates..." ${STD_LOG_ARG}
+  envsubst < ${HAZ_DIR}/configs/etc/nginx/sites-available/localhost.conf.tmpl > ${HAZ_DIR}/configs/etc/nginx/sites-available/localhost.conf
+
   eval echo "Configuring nginx..." ${STD_LOG_ARG}
 
   # Copy in our site config(s)
