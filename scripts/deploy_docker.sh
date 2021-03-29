@@ -21,14 +21,14 @@ STD_LOG=${STD_LOG:-'install_haz.log'}
 configure_dhcpcd()
 {
   eval echo "Configuring dhcpcd..." ${STD_LOG_ARG}
-  envsubst < ${HAZ_DIR}/etc/dhcpcd.conf.tmpl > /etc/dhcpcd.conf
+  envsubst < ${HAZ_DIR}/configs/etc/dhcpcd.conf.tmpl > /etc/dhcpcd.conf
 }
 
 # Set up and configure dnsmasq
 configure_dnsmasq()
 {
   eval echo "Configuring dnsmasq..." ${STD_LOG_ARG}
-  envsubst < ${HAZ_DIR}/templates/dnsmasq.conf.tmpl > /etc/dnsmasq.conf
+  envsubst < ${HAZ_DIR}/configs/etc/dnsmasq.conf.tmpl > /etc/dnsmasq.conf
 }
 
 # Set up and configure hostapd
@@ -37,7 +37,7 @@ configure_hostapd()
   eval echo "Configuring hostapd..." ${STD_LOG_ARG}
 
   # Build the config for hostapd
-  envsubst < ${HAZ_DIR}/etc/hostapd/hostapd.conf.tmpl > /etc/hostapd/hostapd.conf
+  envsubst < ${HAZ_DIR}/configs/etc/hostapd/hostapd.conf.tmpl > /etc/hostapd/hostapd.conf
   chmod 640 /etc/hostapd/hostapd.conf
 
   # Specify a service config for hostapd
