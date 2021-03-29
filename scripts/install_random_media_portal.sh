@@ -15,7 +15,7 @@ STD_LOG=${STD_LOG:-'install_random_media_portal.log'}
 ## Build the environment file
 build_environment_file()
 {
-  envsubst < ${HAZ_DIR}/templates/random-media-portal.tmpl > /etc/default/random-media-portal
+  envsubst < ${HAZ_DIR}/configs/etc/default/random-media-portal.tmpl > /etc/default/random-media-portal
   chmod 640 /etc/default/random-media-portal
 }
 
