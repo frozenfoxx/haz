@@ -19,4 +19,3 @@ This software stack allows you to run a local network with configurable endpoint
 * [configs](./configs): configuration files;
 * [docs](./docs): documentation about configuring and using HAZ;
 * [scripts](./scripts): deployment scripts;
-* [templates](./templates): templates for configuring HAZ;
