@@ -30,7 +30,7 @@ check_root()
 configure_dhcpcd()
 {
   eval echo "Configuring dhcpcd..." ${STD_LOG_ARG}
-  envsubst < ${HAZ_DIR}/templates/dhcpcd.conf.tmpl > /etc/dhcpcd.conf
+  envsubst < ${HAZ_DIR}/etc/dhcpcd.conf.tmpl > /etc/dhcpcd.conf
 
   # Restart networking to take effect
   # service dhcpcd restart
