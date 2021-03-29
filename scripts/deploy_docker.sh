@@ -2,6 +2,8 @@
 
 # Variables
 DEBIAN_FRONTEND="noninteractive"
+DROOPY_DIR=${DROOPY_DIR:'/data'}
+DROOPY_PORT=${DROOPY_PORT:-'8020'}
 HAZ_DIR=${HAZ_DIR:-'/opt/haz'}
 HAZ_NAME=${HAZ_NAME:-'haz'}
 NET_CHANNEL=${NET_CHANNEL:-'6'}
@@ -149,6 +151,7 @@ done
 ${HAZ_DIR}/scripts/install_nodogsplash.sh
 ${HAZ_DIR}/scripts/install_random_media_portal.sh -docker
 ${HAZ_DIR}/scripts/install_ircd-hybrid.sh
+${HAZ_DIR}/scripts/install_droopy.sh
 configure_nginx
 configure_network
 configure_dhcpcd
