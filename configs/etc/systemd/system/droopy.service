@@ -1,0 +1,15 @@
+
+[Unit]
+Description=droopy server
+Wants=nginx.service
+
+[Service]
+Type=simple
+WorkingDirectory=/data
+EnvironmentFile=/etc/default/droopy
+ExecStart=python3 /opt/droopy/droopy -m "HAZ file upload"
+Restart=always
+TimeoutSec=10
+
+[Install]
+WantedBy=multi-user.target
