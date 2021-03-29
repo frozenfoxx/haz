@@ -107,6 +107,7 @@ configure_nginx()
 
   eval echo "Configuring nginx templates..." ${STD_LOG_ARG}
   envsubst < ${HAZ_DIR}/configs/etc/nginx/sites-available/localhost.conf.tmpl > ${HAZ_DIR}/configs/etc/nginx/sites-available/localhost.conf
+  envsubst < ${HAZ_DIR}/configs/etc/nginx/sites-available/upload.conf.tmpl > ${HAZ_DIR}/configs/etc/nginx/sites-available/upload.conf
 
   eval echo "Configuring nginx..." ${STD_LOG_ARG}
 
@@ -115,6 +116,7 @@ configure_nginx()
 
   # Enable the new site
   ln -s /etc/nginx/sites-available/localhost.conf /etc/nginx/sites-enabled/localhost.conf
+  ln -s /etc/nginx/sites-available/upload.conf /etc/nginx/sites-enabled/upload.conf
 
   # Disable the default welcome
   if [[ -f /etc/nginx/sites-enabled/default ]]; then
