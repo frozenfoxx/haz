@@ -60,8 +60,7 @@ configure_wifi()
     exit 1
   fi
 
-  cp ./wpa_supplicant.conf /media/${MYUSER}/boot/wpa_supplicant.conf
-  envsubst < ${HAZ_DIR}/templates/wpa_supplicant.conf.tmpl > /media/${MYUSER}/boot/wpa_supplicant.conf
+  envsubst < ${HAZ_DIR}/configs/boot/wpa_supplicant.conf.tmpl > /media/${MYUSER}/boot/wpa_supplicant.conf
 }
 
 # Copy over data files
