@@ -1,6 +1,8 @@
 #!/usr/bin/env bash
 
 # Variables
+HAZ_DIR=${HAZ_DIR:-'/opt/haz'}
+HAZ_NAME=${HAZ_NAME:-'haz'}
 PASSWORD=${PASSWORD:-''}
 SOFTDIR=${SOFTDIR:-'/opt'}
 LOG_PATH=${LOG_PATH:-'/var/log'}
@@ -18,6 +20,9 @@ configure()
   fi
 
   ENCRYPTED_PASS=$(/usr/bin/mkpasswd ${PASSWORD})
+  
+  eval echo "Configuring ircd-hybrid server..." ${STD_LOG_ARG}
+  envsubst < ${HAZ_DIR}/configs/etc/ircd-hybrid/ircd.conf.tmpl > /etc/ircd-hybrid/ircd.conf.tmpl
 }
 
 ## Install the ircd-hybrid server
