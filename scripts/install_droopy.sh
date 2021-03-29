@@ -3,7 +3,7 @@
 # Variables
 DOCKER=${DOCKER:-'false'}
 DROOPY=${DROOPY:-"https://github.com/frozenfoxx/droopy.git"}
-DROOPY_DIRECTORY=${DROOPY_DIRECTORY:'/data'}
+DROOPY_DIR=${DROOPY_DIR:'/data'}
 DROOPY_PORT=${DROOPY_PORT:-'8020'}
 HAZ_DIR=${HAZ_DIR:-'/opt/haz'}
 SOFTDIR=${SOFTDIR:-'/opt'}
@@ -75,7 +75,7 @@ usage()
   echo "Usage: [Environment Variables] ./install.sh [-hL]"
   echo "  Environment Variables:"
   echo "    DROOPY                 Git repo for droopy (default: https://github.com/frozenfoxx/Droopy.git)"
-  echo "    DROOPY_DIRECTORY       directory for uploads (default: /data)"
+  echo "    DROOPY_DIR             directory for uploads (default: /data)"
   echo "    DROOPY_PORT            port for the server (default: 8020)"
   echo "    LOG_PATH               path for logs (default: '/var/log')"
   echo "  Options:"
