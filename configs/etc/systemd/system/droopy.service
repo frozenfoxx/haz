@@ -7,7 +7,7 @@ Wants=nginx.service
 Type=simple
 WorkingDirectory=/data
 EnvironmentFile=/etc/default/droopy
-ExecStart=python3 /opt/droopy/droopy -m "File upload service"
+ExecStart=/opt/droopy/droopy -m "File upload service"
 Restart=always
 TimeoutSec=10
 
