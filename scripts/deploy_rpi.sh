@@ -1,7 +1,6 @@
 #!/usr/bin/env bash
 
 # Variables
-PLATFORM=$(uname -s)
 MYUSER=$(whoami)
 HAZ=${HAZ:-"https://github.com/frozenfoxx/haz.git"}
 HAZ_DIR=${HAZ_DIR:-'/opt/haz'}
