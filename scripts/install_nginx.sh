@@ -45,7 +45,10 @@ install()
 
   eval echo "Configuring index..." ${STD_LOG_ARG}
   mkdir -p /var/www/html
+  chmod 0755 /var/www/html
+
   envsubst < ${HAZ_DIR}/configs/var/www/html/index.html.tmpl > /var/www/html/index.html
+  chmod 0644 /var/www/html/index.html
 
   # Enable the new sites
   ln -s /etc/nginx/sites-available/index.conf /etc/nginx/sites-enabled/index.conf
