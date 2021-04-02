@@ -88,46 +88,6 @@ configure_network()
   echo "${NET_GATEWAY} ${HAZ_NAME}" >> /etc/hosts
 }
 
-# Set up and configure nginx
-configure_nginx()
-{
-  eval echo "Generating self-signed SSL certificate..." ${STD_LOG_ARG}
-  cp ${HAZ_DIR}/configs/root/localhost.openssl.conf /root/
-
-  # Create the certificate and key
-  cd /root
-  openssl req -x509 -nodes -days 365 -newkey rsa:2048 -keyout localhost.key -out localhost.crt -config localhost.openssl.conf
-
-  # Move those to the SSL directory
-  mv localhost.crt /etc/ssl/certs/
-  mv localhost.key /etc/ssl/private/localhost.key
-
-  # Change back to the script directory
-  cd ${HAZ_DIR}/scripts
-
-  eval echo "Configuring nginx templates..." ${STD_LOG_ARG}
-  envsubst < ${HAZ_DIR}/configs/etc/nginx/sites-available/localhost.conf.tmpl > ${HAZ_DIR}/configs/etc/nginx/sites-available/localhost.conf
-  envsubst < ${HAZ_DIR}/configs/etc/nginx/sites-available/upload.conf.tmpl > ${HAZ_DIR}/configs/etc/nginx/sites-available/upload.conf
-
-  eval echo "Configuring nginx..." ${STD_LOG_ARG}
-
-  # Copy in our site config(s)
-  cp ${HAZ_DIR}/configs/etc/nginx/sites-available/*.conf /etc/nginx/sites-available/
-
-  # Enable the new site
-  ln -s /etc/nginx/sites-available/localhost.conf /etc/nginx/sites-enabled/localhost.conf
-  ln -s /etc/nginx/sites-available/upload.conf /etc/nginx/sites-enabled/upload.conf
-
-  # Disable the default welcome
-  if [[ -f /etc/nginx/sites-enabled/default ]]; then
-    rm /etc/nginx/sites-enabled/default
-  fi
-
-  # Start the service
-  systemctl start nginx
-  systemctl enable nginx
-}
-
 # Enable IPv4 forwarding
 enable_forwarding()
 {
@@ -158,7 +118,6 @@ install_dependencies()
     git \
     dnsmasq \
     hostapd \
-    nginx \
     ruby
 
   # Install gem dependencies
@@ -218,7 +177,7 @@ ${HAZ_DIR}/scripts/install_nodogsplash.sh
 ${HAZ_DIR}/scripts/install_random_media_portal.sh
 ${HAZ_DIR}/scripts/install_ircd-hybrid.sh
 ${HAZ_DIR}/scripts/install_droopy.sh
-configure_nginx
+${HAZ_DIR}/scripts/install_nginx.sh
 configure_network
 configure_dhcpcd
 configure_hostapd

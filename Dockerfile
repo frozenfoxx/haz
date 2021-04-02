@@ -20,7 +20,6 @@ RUN apt-get update && \
       dnsmasq \
       gettext \
       hostapd \
-      nginx \
       ruby \
       supervisor
 

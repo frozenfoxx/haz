@@ -1,0 +1,32 @@
+server {
+  listen 80;
+  server_name ${HAZ_NAME};
+
+  root /var/www/html;
+  index index.html;
+
+  location / {
+    # First attempt to serve request as file, then
+    # as directory, then fall back to displaying a 404.
+    try_files $uri $uri/ =404;
+  }
+}
+
+server {
+  listen 443 ssl;
+  server_name ${HAZ_NAME};
+
+  ssl_certificate /etc/ssl/certs/localhost.crt;
+  ssl_certificate_key /etc/ssl/private/localhost.key;
+
+  ssl_protocols TLSv1.2 TLSv1.1 TLSv1;
+
+  root /var/www/html;
+  index index.html;
+
+  location / {
+    # First attempt to serve request as file, then
+    # as directory, then fall back to displaying a 404.
+    try_files $uri $uri/ =404;
+  }
+}
