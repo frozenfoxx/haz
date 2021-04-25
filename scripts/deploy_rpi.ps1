@@ -1,9 +1,18 @@
 
 # Variables
-MYUSER=$(whoami)
-HAZ=${HAZ:-"https://github.com/frozenfoxx/haz.git"}
-HAZ_DIR=${HAZ_DIR:-'/opt/haz'}
-HAZ_NAME=${HAZ_NAME:-'haz'}
+$Env:MYUSER = [System.Security.Principal.WindowsIdentity]::GetCurrent().Name
+
+if($Env:HAZ -eq $null) {
+  $Env:HAZ = "https://github.com/frozenfoxx/haz.git"
+}
+
+if($Env:HAZ_DIR -eq $null) {
+  $Env:HAZ_DIR = "/opt/haz"
+}
+
+if($Env:HAZ_NAME -eq $null) {
+  $Eenv:HAZ_NAME = "haz"
+}
 
 # Functions
 
