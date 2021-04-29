@@ -71,7 +71,7 @@ function Copy-Data {
   echo "Copying over data..."
 
   sudo mkdir /media/${MYUSER}/rootfs/data
-  sudo cp data/* /media/${MYUSER}/rootfs/data/
+  sudo cp ../data/* /media/${MYUSER}/rootfs/data/
 
   echo "Syncing. This might take a minute..."
   sync
