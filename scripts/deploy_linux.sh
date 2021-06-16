@@ -124,7 +124,7 @@ install_dependencies()
   gem install bundler
 
   # Create directory for holding media if it doesn't exist already
-  mkdir -p /data
+  mkdir -p ${DROOPY_DIR}
 }
 
 # Upgrade the system
