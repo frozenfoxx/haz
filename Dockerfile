@@ -29,11 +29,14 @@ RUN gem install bundler
 # Create directory for holding media if it doesn't exist already
 RUN mkdir -p /data
 
+# Set the working directory
+WORKDIR ${HAZ_DIR}
+
 # Add HAZ
-COPY . ${HAZ_DIR}
+COPY . .
 
 # Run the installer
-RUN ${HAZ_DIR}/scripts/deploy_docker.sh
+RUN ./scripts/deploy_docker.sh
 
 # Clean up apt
 RUN apt-get clean && \
@@ -42,4 +45,4 @@ RUN apt-get clean && \
 # Set up supervisor
 COPY configs/etc/supervisor/conf.d/supervisord.conf /etc/supervisor/conf.d/supervisord.conf
 
-ENTRYPOINT [ "${HAZ_DIR}/scripts/entrypoint.sh" ]
+ENTRYPOINT [ "./scripts/entrypoint.sh" ]
