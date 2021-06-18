@@ -6,9 +6,11 @@ LABEL maintainer="FrozenFOXX <frozenfoxx@churchoffoxx.net>"
 
 # Environment variables
 ENV DEBIAN_FRONTEND "noninteractive"
+ENV DROOPY_DIR "/data"
 ENV HAZ_DIR "/opt/haz"
 ENV HAZ_NAME "haz"
 ENV HOST 0.0.0.0
+ENV MEDIA_DIRECTORY "/data"
 ENV NET_DHCPRANGE "192.168.4.100,192.168.4.150,5m"
 ENV NET_GATEWAY "192.168.4.1"
 
@@ -26,14 +28,15 @@ RUN apt-get update && \
 # Install gem dependencies
 RUN gem install bundler
 
-# Create directory for holding media if it doesn't exist already
-RUN mkdir -p /data
-
 # Set the working directory
 WORKDIR ${HAZ_DIR}
 
 # Add HAZ
 COPY . .
+
+# Create directories for media
+RUN mkdir -p ${DROOPY_DIR} && \
+  mkdir -p ${MEDIA_DIRECTORY}
 
 # Run the installer
 RUN ./scripts/deploy_docker.sh
@@ -41,8 +44,5 @@ RUN ./scripts/deploy_docker.sh
 # Clean up apt
 RUN apt-get clean && \
   rm -rf /var/lib/apt/lists/*
-
-# Set up supervisor
-COPY configs/etc/supervisor/conf.d/supervisord.conf /etc/supervisor/conf.d/supervisord.conf
 
 ENTRYPOINT [ "./scripts/entrypoint.sh" ]

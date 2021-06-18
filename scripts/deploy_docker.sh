@@ -3,9 +3,9 @@
 # Variables
 DEBIAN_FRONTEND="noninteractive"
 DROOPY_DIR=${DROOPY_DIR:'/data'}
-DROOPY_PORT=${DROOPY_PORT:-'8020'}
 HAZ_DIR=${HAZ_DIR:-'/opt/haz'}
 HAZ_NAME=${HAZ_NAME:-'haz'}
+MEDIA_DIRECTORY=${MEDIA_DIRECTORY:'/data'}
 NET_CHANNEL=${NET_CHANNEL:-'6'}
 NET_DHCPRANGE=${NET_DHCPRANGE:-'192.168.4.100,192.168.4.150,5m'}
 NET_DRIVER=${NET_DRIVER:-'nl80211'}
@@ -26,14 +26,14 @@ configure_dhcpcd()
   envsubst < ${HAZ_DIR}/configs/etc/dhcpcd.conf.tmpl > /etc/dhcpcd.conf
 }
 
-# Set up and configure dnsmasq
+## Set up and configure dnsmasq
 configure_dnsmasq()
 {
   eval echo "Configuring dnsmasq..." ${STD_LOG_ARG}
   envsubst < ${HAZ_DIR}/configs/etc/dnsmasq.conf.tmpl > /etc/dnsmasq.conf
 }
 
-# Set up and configure hostapd
+## Set up and configure hostapd
 configure_hostapd()
 {
   eval echo "Configuring hostapd..." ${STD_LOG_ARG}
@@ -47,7 +47,7 @@ configure_hostapd()
   cp ${HAZ_DIR}/configs/etc/default/hostapd /etc/default/hostapd
 }
 
-# Set up the network devices
+## Set up the network devices
 configure_network()
 {
   eval echo "Configuring network devices..." ${STD_LOG_ARG}
@@ -64,7 +64,13 @@ configure_network()
   echo "${NET_GATEWAY} ${HAZ_NAME}" >> /etc/hosts
 }
 
-# Enable IPv4 forwarding
+## Load supervisor configuration
+configure_supervisor()
+{
+  cp ${HAZ_DIR}/configs/etc/supervisor/conf.d/supervisord.conf /etc/supervisor/conf.d/supervisord.conf
+}
+
+## Enable IPv4 forwarding
 enable_forwarding()
 {
   eval echo "Enabling IPv4 forwarding..." ${STD_LOG_ARG}
@@ -83,14 +89,14 @@ enable_forwarding()
   fi
 }
 
-# Set logging on
+## Set logging on
 set_logging()
 {
   echo "Running with logging option..."
   STD_LOG_ARG=">>${LOG_PATH}/${STD_LOG}"
 }
 
-# Display usage information
+## Display usage information
 usage()
 {
   echo "Usage: [Environment Variables] ./install.sh [-hL]"
@@ -124,3 +130,4 @@ configure_dhcpcd
 configure_hostapd
 enable_forwarding
 configure_dnsmasq
+configure_supervisor

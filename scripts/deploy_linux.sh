@@ -3,9 +3,9 @@
 # Variables
 DEBIAN_FRONTEND="noninteractive"
 DROOPY_DIR=${DROOPY_DIR:'/data'}
-DROOPY_PORT=${DROOPY_PORT:-'8020'}
 HAZ_DIR=${HAZ_DIR:-'/opt/haz'}
 HAZ_NAME=${HAZ_NAME:-'haz'}
+MEDIA_DIRECTORY=${MEDIA_DIRECTORY:'/data'}
 NET_CHANNEL=${NET_CHANNEL:-'6'}
 NET_DHCPRANGE=${NET_DHCPRANGE:-'192.168.4.100,192.168.4.150,5m'}
 NET_DRIVER=${NET_DRIVER:-'nl80211'}
@@ -19,7 +19,7 @@ STD_LOG=${STD_LOG:-'install_haz.log'}
 
 # Functions
 
-# Check if the script is running as root
+## Check if the script is running as root
 check_root()
 {
   if [[ $EUID -ne 0 ]]; then
@@ -28,7 +28,7 @@ check_root()
   fi
 }
 
-# Configure dhcpcd
+## Configure dhcpcd
 configure_dhcpcd()
 {
   eval echo "Configuring dhcpcd..." ${STD_LOG_ARG}
@@ -40,7 +40,7 @@ configure_dhcpcd()
   # ip link set ${NET_IFACE} up
 }
 
-# Set up and configure dnsmasq
+## Set up and configure dnsmasq
 configure_dnsmasq()
 {
   eval echo "Configuring dnsmasq..." ${STD_LOG_ARG}
@@ -50,7 +50,7 @@ configure_dnsmasq()
   systemctl enable dnsmasq
 }
 
-# Set up and configure hostapd
+## Set up and configure hostapd
 configure_hostapd()
 {
   eval echo "Configuring hostapd..." ${STD_LOG_ARG}
@@ -68,7 +68,7 @@ configure_hostapd()
   systemctl enable hostapd
 }
 
-# Set up the network devices
+## Set up the network devices
 configure_network()
 {
   eval echo "Configuring network devices..." ${STD_LOG_ARG}
@@ -88,7 +88,7 @@ configure_network()
   echo "${NET_GATEWAY} ${HAZ_NAME}" >> /etc/hosts
 }
 
-# Enable IPv4 forwarding
+## Enable IPv4 forwarding
 enable_forwarding()
 {
   eval echo "Enabling IPv4 forwarding..." ${STD_LOG_ARG}
@@ -107,7 +107,7 @@ enable_forwarding()
   fi
 }
 
-# Install dependencies
+## Install dependencies
 install_dependencies()
 {
   eval echo "Installing core toolchain..." ${STD_LOG_ARG}
@@ -124,10 +124,13 @@ install_dependencies()
   gem install bundler
 
   # Create directory for holding media if it doesn't exist already
+  mkdir -p ${MEDIA_DIRECTORY}
+
+  # Create directory for uploads if it doesn't exist already
   mkdir -p ${DROOPY_DIR}
 }
 
-# Upgrade the system
+## Upgrade the system
 upgrade_system()
 {
   eval echo "Upgrading system..." ${STD_LOG_ARG}
@@ -139,14 +142,14 @@ upgrade_system()
   eval echo "Reboot may be necessary." ${STD_LOG_ARG}
 }
 
-# Set logging on
+## Set logging on
 set_logging()
 {
   echo "Running with logging option..."
   STD_LOG_ARG=">>${LOG_PATH}/${STD_LOG}"
 }
 
-# Display usage information
+## Display usage information
 usage()
 {
   echo "Usage: [Environment Variables] ./deploy_linux.sh [-hL]"
