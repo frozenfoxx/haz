@@ -1,10 +1,10 @@
 #!/usr/bin/env bash
 
 # Variables
+DOCKER=${DOCKER:-'false'}
 HAZ_DIR=${HAZ_DIR:-'/opt/haz'}
 HAZ_NAME=${HAZ_NAME:-'haz'}
 PASSWORD=${PASSWORD:-''}
-SOFTDIR=${SOFTDIR:-'/opt'}
 LOG_PATH=${LOG_PATH:-'/var/log'}
 STD_LOG=${STD_LOG:-'install_ircd-hybrid.log'}
 
@@ -20,9 +20,27 @@ configure()
   fi
 
   ENCRYPTED_PASS=$(/usr/bin/mkpasswd ${PASSWORD})
-  
+
   eval echo "Configuring ircd-hybrid server..." ${STD_LOG_ARG}
-  envsubst < ${HAZ_DIR}/configs/etc/ircd-hybrid/ircd.conf.tmpl > /etc/ircd-hybrid/ircd.conf.tmpl
+  envsubst < ${HAZ_DIR}/configs/etc/ircd-hybrid/ircd.conf.tmpl > /etc/ircd-hybrid/ircd.conf
+
+  # Check if systemd needs to be configured
+  if [[ ${OSTYPE} == "linux-gnu"* ]]; then
+    if [[ ${DOCKER} == 'false' ]]; then
+      configure_systemd
+    fi
+  fi
+}
+
+## Configure systemd
+configure_systemd()
+{
+  # Install the service file
+  cp ${HAZ_DIR}/configs/etc/systemd/system/ircd.service /etc/systemd/system/
+
+  # Reload the service
+  systemctl daemon-reload
+  systemctl enable ircd.service
 }
 
 ## Install the ircd-hybrid server
@@ -30,9 +48,6 @@ install()
 {
   eval echo "Installing ircd-hybrid..." ${STD_LOG_ARG}
 
-  # Change to a directory for optional software
-  cd ${SOFTDIR}
-  
   # Install
   apt-get install -y \
     ircd-hybrid
@@ -61,10 +76,12 @@ usage()
 ## Argument parsing
 while [[ "$1" != "" ]]; do
   case $1 in
-    -L | --Log )  set_logging
+    -docker )     DOCKER='true'
                   ;;
     -h | --help ) usage
                   exit 0
+                  ;;
+    -L | --Log )  set_logging
   esac
   shift
 done

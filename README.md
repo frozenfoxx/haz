@@ -10,9 +10,10 @@ This software stack allows you to run a local network with configurable endpoint
 
 ## Features
 
-* Configurable random media default endpoint;
-* IRC server;
-* Wi-Fi greeting;
+* Configurable random media default endpoint
+* Web file uploads
+* IRC server
+* Wi-Fi greeting
 
 # Layout
 

@@ -1,0 +1,13 @@
+
+[Unit]
+Description=ircd-hybrid server
+Wants=nginx.service
+
+[Service]
+Type=simple
+ExecStart=/usr/bin/ircd -configfile /etc/ircd-hybrid/ircd.conf
+Restart=always
+TimeoutSec=10
+
+[Install]
+WantedBy=multi-user.target

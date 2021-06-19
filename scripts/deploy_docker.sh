@@ -122,7 +122,7 @@ done
 
 ${HAZ_DIR}/scripts/install_nodogsplash.sh
 ${HAZ_DIR}/scripts/install_random_media_portal.sh -docker
-${HAZ_DIR}/scripts/install_ircd-hybrid.sh
+${HAZ_DIR}/scripts/install_ircd-hybrid.sh -docker
 ${HAZ_DIR}/scripts/install_droopy.sh
 ${HAZ_DIR}/scripts/install_nginx.sh -docker
 configure_network
