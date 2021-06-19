@@ -34,20 +34,21 @@ configure_systemd()
 finish_message()
 {
   eval echo "Droopy is now installed and ready to go." ${STD_LOG_ARG}
-  eval echo "To alter which media to serve check these variables in the /etc/default/droopy file" ${STD_LOG_ARG}
+  eval echo "It is installed to ${SOFT_DIR}/droopy." ${STD_LOG_ARG}
+  eval echo "To alter settings check these variables in the /etc/default/droopy file" ${STD_LOG_ARG}
   eval echo "    DROOPY_DIR             path containing uploads" ${STD_LOG_ARG}
   eval echo "    DROOPY_PORT            port for the server" ${STD_LOG_ARG}
 }
 
-## Install random-media-portal
+## Install droopy
 install()
 {
-  eval echo "Installing the droopy..." ${STD_LOG_ARG}
+  eval echo "Installing droopy..." ${STD_LOG_ARG}
 
   # Change to a directory for optional software
   cd ${SOFTDIR}
   
-  # Pull a copy of the latest random-media-portal
+  # Pull a copy of the latest droopy
   git clone ${DROOPY} ${SOFTDIR}/droopy
   cd ${SOFTDIR}/droopy
 
@@ -77,6 +78,7 @@ usage()
   echo "    DROOPY                 Git repo for droopy (default: https://github.com/frozenfoxx/Droopy.git)"
   echo "    DROOPY_DIR             directory for uploads (default: /data)"
   echo "    DROOPY_PORT            port for the server (default: 8020)"
+  echo "    SOFT_DIR               optional software installation directory (default: /opt)"
   echo "    LOG_PATH               path for logs (default: '/var/log')"
   echo "  Options:"
   echo "    -h | --help            display this usage information"
