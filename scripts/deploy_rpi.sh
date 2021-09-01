@@ -67,13 +67,22 @@ configure_wifi()
   DEPLOY_SSID=$(whiptail --title "Local Network SSID" --inputbox "Input the SSID of your local WiFi network" 10 40 3>&1 1>&2 2>&3)
   DEPLOY_PSK=$(whiptail --title "Local Network Passphrase" --inputbox "Input the local WiFi network's passphrase" 10 40 3>&1 1>&2 2>&3)
 
+  # Export the values for envsubst
+  export DEPLOY_PSK
+  export DEPLOY_SSID
+
   # Check for if the user cancelled
   if [[ ${DEPLOY_SSID} == '' ]]; then
     echo "[!] No local network SSID entered, terminating..."
     exit 1
   fi
 
+  # Replace variables in the template
   envsubst < ${DEPLOYSCRIPT_DIR}/../configs/boot/wpa_supplicant.conf.tmpl > ${MOUNT_ROOT}/boot/wpa_supplicant.conf
+
+  # Set these back to null
+  export DEPLOY_PSK=''
+  export DEPLOY_SSID=''
 }
 
 ## Copy over data files
