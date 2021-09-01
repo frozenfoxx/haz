@@ -36,7 +36,7 @@ configure_ssh()
 ## Configure user
 configure_user()
 {
-  AUTHORIZED_KEYS=$(whiptail --title "Authorized Keys for SSH" --inputbox "Input the fully-qualified path to a public SSH key to use for connecting to the system.\n\nFound the following:\n\n$(ls ~/.ssh/*.pub)" 30 55 3>&1 1>&2 2>&3)
+  AUTHORIZED_KEYS=$(whiptail --title "Authorized Keys for SSH" --inputbox "Input the fully-qualified path to a public SSH key to use for connecting to the system.\n\n" 30 55 3>&1 1>&2 2>&3)
 
   # Check for if the user cancelled
   if [[ ${AUTHORIZED_KEYS} == '' ]]; then
@@ -51,9 +51,13 @@ configure_user()
   fi
 
   echo "Copying over the provided public key for the pi user..."
+  PI_USER=$(stat -c "%U" ${MOUNT_ROOT}/rootfs/home/pi)
+  PI_GROUP=$(stat -c "%G" ${MOUNT_ROOT}/rootfs/home/pi)
+
   mkdir ${MOUNT_ROOT}/rootfs/home/pi/.ssh
   chmod 700 ${MOUNT_ROOT}/rootfs/home/pi/.ssh
   cp ${AUTHORIZED_KEYS} ${MOUNT_ROOT}/rootfs/home/pi/.ssh/authorized_keys
+  chown -R ${PI_USER}:${PI_GROUP} ${MOUNT_ROOT}/rootfs/home/pi
 }
 
 ## Set up WiFi for the inital connection
