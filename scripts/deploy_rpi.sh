@@ -5,6 +5,7 @@ HAZ=${HAZ:-"https://github.com/frozenfoxx/haz.git"}
 HAZ_DIR=${HAZ_DIR:-'/opt/haz'}
 HAZ_NAME=${HAZ_NAME:-'haz'}
 MOUNT_ROOT=${MOUNT_ROOT:-''}
+REPO_DIR=$(dirname $0)
 
 # Functions
 
@@ -72,7 +73,7 @@ configure_wifi()
     exit 1
   fi
 
-  envsubst < ${HAZ_DIR}/configs/boot/wpa_supplicant.conf.tmpl > ${MOUNT_ROOT}/boot/wpa_supplicant.conf
+  envsubst < ${REPO_DIR}/configs/boot/wpa_supplicant.conf.tmpl > ${MOUNT_ROOT}/boot/wpa_supplicant.conf
 }
 
 ## Copy over data files
@@ -80,8 +81,8 @@ deploy_data()
 {
   echo "Copying over data..."
 
-  sudo mkdir ${MOUNT_ROOT}/rootfs/data
-  sudo cp ../data/* ${MOUNT_ROOT}/rootfs/data/
+  mkdir ${MOUNT_ROOT}/rootfs/data
+  cp ${REPO_DIR}/data/* ${MOUNT_ROOT}/rootfs/data/
 
   echo "Syncing. This might take a minute..."
   sync
