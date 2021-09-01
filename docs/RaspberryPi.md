@@ -14,7 +14,7 @@ This directory contains scripts and tools intended to ease deployment onto a Ras
 
 # Deployment
 
-* Download a recent image of Raspbian Lite [here](https://downloads.raspberrypi.org/raspbian_lite_latest);
+* Download a recent image of Raspberry Pi OS Lite [here](https://www.raspberrypi.org/software/operating-systems/#raspberry-pi-os-32-bit);
 * Open Etcher and flash the MicroSD card with Raspbian;
 * Unplug, then replug in the card to ensure a fresh mount;
 * Locate the mount point in the filesystem:
