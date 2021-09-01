@@ -1,11 +1,13 @@
 #!/usr/bin/env bash
 
 # Variables
+DEPLOYSCRIPT_PATH=$(realpath "$0")
+DEPLOYREPO_DIR=$(dirname "${DEPLOYSCRIPT_PATH}/..")
+
 HAZ=${HAZ:-"https://github.com/frozenfoxx/haz.git"}
 HAZ_DIR=${HAZ_DIR:-'/opt/haz'}
 HAZ_NAME=${HAZ_NAME:-'haz'}
 MOUNT_ROOT=${MOUNT_ROOT:-''}
-REPO_DIR=$(dirname $0)
 
 # Functions
 
@@ -73,7 +75,7 @@ configure_wifi()
     exit 1
   fi
 
-  envsubst < ${REPO_DIR}/configs/boot/wpa_supplicant.conf.tmpl > ${MOUNT_ROOT}/boot/wpa_supplicant.conf
+  envsubst < ${DEPLOYREPO_DIR}/configs/boot/wpa_supplicant.conf.tmpl > ${MOUNT_ROOT}/boot/wpa_supplicant.conf
 }
 
 ## Copy over data files
@@ -82,7 +84,7 @@ deploy_data()
   echo "Copying over data..."
 
   mkdir ${MOUNT_ROOT}/rootfs/data
-  cp ${REPO_DIR}/data/* ${MOUNT_ROOT}/rootfs/data/
+  cp ${DEPLOYREPO_DIR}/data/* ${MOUNT_ROOT}/rootfs/data/
 
   echo "Syncing. This might take a minute..."
   sync
