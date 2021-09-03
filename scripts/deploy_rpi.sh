@@ -102,7 +102,8 @@ deploy_haz()
 {
   echo "Cloning latest haz..."
 
-  git clone ${haz} ${MOUNT_ROOT}/rootfs${HAZ_DIR}
+  
+  git clone ${HAZ} ${MOUNT_ROOT}/rootfs${HAZ_DIR}
 }
 
 ## Show the user what must be done next
