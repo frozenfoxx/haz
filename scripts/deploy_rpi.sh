@@ -5,6 +5,7 @@ DEPLOYSCRIPT_DIR=$(dirname $(realpath $0))
 HAZ=${HAZ:-"https://github.com/frozenfoxx/haz.git"}
 HAZ_DIR=${HAZ_DIR:-'/opt/haz'}
 HAZ_NAME=${HAZ_NAME:-'haz'}
+LOCALE=${LOCALE:-'en_US'}
 MOUNT_ROOT=${MOUNT_ROOT:-''}
 
 # Functions
@@ -25,6 +26,14 @@ configure_hostname()
   sudo sed -i "s/raspberrypi/${HAZ_NAME}/g" ${MOUNT_ROOT}/rootfs/etc/hosts
   sudo sed -i "s/raspberrypi/${HAZ_NAME}/g" ${MOUNT_ROOT}/rootfs/etc/hostname
   echo ${HAZ_NAME} > ${MOUNT_ROOT}/boot/hostnames
+}
+
+## Set the locale settings
+configure_locale()
+{
+  echo "Setting locale..."
+  export LOCALE
+  envsubst < ${LOCALE}/../configs/etc/default/locale.tmpl > ${MOUNT_ROOT}/root/etc/default/locale
 }
 
 ## Ensure SSH is enabled at boot
@@ -59,6 +68,9 @@ configure_user()
   chmod 700 ${MOUNT_ROOT}/rootfs/home/pi/.ssh
   cp ${AUTHORIZED_KEYS} ${MOUNT_ROOT}/rootfs/home/pi/.ssh/authorized_keys
   chown -R ${PI_USER}:${PI_GROUP} ${MOUNT_ROOT}/rootfs/home/pi
+
+  echo "Setting LC_ALL=${LOCALE} for the pi user..."
+  echo "LC_ALL=${LOCALE}" >> ${MOUNT_ROOT}/rootfs/home/pi/.profile
 }
 
 ## Set up WiFi for the inital connection
@@ -101,7 +113,6 @@ deploy_data()
 deploy_haz()
 {
   echo "Cloning latest haz..."
-
   
   git clone ${HAZ} ${MOUNT_ROOT}/rootfs${HAZ_DIR}
 }
@@ -149,6 +160,7 @@ done
 
 check_mount_root
 configure_user
+configure_locale
 configure_ssh
 configure_wifi
 configure_hostname
