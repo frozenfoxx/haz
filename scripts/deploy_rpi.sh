@@ -64,7 +64,7 @@ configure_user()
   PI_USER=$(stat -c "%U" ${MOUNT_ROOT}/rootfs/home/pi)
   PI_GROUP=$(stat -c "%G" ${MOUNT_ROOT}/rootfs/home/pi)
 
-  mkdir ${MOUNT_ROOT}/rootfs/home/pi/.ssh
+  mkdir -p ${MOUNT_ROOT}/rootfs/home/pi/.ssh
   chmod 700 ${MOUNT_ROOT}/rootfs/home/pi/.ssh
   cp ${AUTHORIZED_KEYS} ${MOUNT_ROOT}/rootfs/home/pi/.ssh/authorized_keys
   chown -R ${PI_USER}:${PI_GROUP} ${MOUNT_ROOT}/rootfs/home/pi
@@ -102,7 +102,7 @@ deploy_data()
 {
   echo "Copying over data..."
 
-  mkdir ${MOUNT_ROOT}/rootfs/data
+  mkdir -p ${MOUNT_ROOT}/rootfs/data
   cp ${DEPLOYSCRIPT_DIR}/../data/* ${MOUNT_ROOT}/rootfs/data/
 
   echo "Syncing. This might take a minute..."
