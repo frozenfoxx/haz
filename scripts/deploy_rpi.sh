@@ -33,7 +33,7 @@ configure_locale()
 {
   echo "Setting locale..."
   export LOCALE
-  envsubst < ${LOCALE}/../configs/etc/default/locale.tmpl > ${MOUNT_ROOT}/root/etc/default/locale
+  envsubst < ${DEPLOYSCRIPT_DIR}/../configs/etc/default/locale.tmpl > ${MOUNT_ROOT}/root/etc/default/locale
 }
 
 ## Ensure SSH is enabled at boot
