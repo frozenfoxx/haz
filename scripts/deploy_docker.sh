@@ -99,7 +99,7 @@ set_logging()
 ## Display usage information
 usage()
 {
-  echo "Usage: [Environment Variables] ./install.sh [-hL]"
+  echo "Usage: [Environment Variables] ./deploy_docker.sh [-hL]"
   echo "  Environment Variables:"
   echo "    LOG_PATH               path for logs (default: '/var/log')"
   echo "  Options:"
