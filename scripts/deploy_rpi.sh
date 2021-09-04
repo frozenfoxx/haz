@@ -32,8 +32,12 @@ configure_hostname()
 configure_locale()
 {
   echo "Setting locale..."
-  export LOCALE
-  envsubst < ${DEPLOYSCRIPT_DIR}/../configs/etc/default/locale.tmpl > ${MOUNT_ROOT}/root/etc/default/locale
+
+  # Comment all uncommented lines
+  sudo sed -i -e 's/^\([^#].*\)/# \1/g' ${MOUNT_ROOT}/rootfs/etc/locale.gen
+
+  # Uncomment the selected locale
+  sudo sed -i -e "s/^#\s${LOCALE} /${LOCALE} /g" ${MOUNT_ROOT}/rootfs/etc/locale.gen
 }
 
 ## Ensure SSH is enabled at boot
