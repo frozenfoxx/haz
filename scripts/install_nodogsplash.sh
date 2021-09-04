@@ -41,7 +41,7 @@ configure()
   envsubst < ${HAZ_DIR}/configs/etc/nodogsplash/nodogsplash.conf.tmpl > /etc/nodogsplash/nodogsplash.conf
 
   eval echo "Setting up splash pages..." ${STD_LOG_ARG}
-  cp -r ${HAZ_DIR}/etc/nodogsplash/htdocs/* /etc/nodogsplash/htdocs/
+  cp -r ${HAZ_DIR}/configs/etc/nodogsplash/htdocs/* /etc/nodogsplash/htdocs/
 }
 
 ## Install nodogsplash
