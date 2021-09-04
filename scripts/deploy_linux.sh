@@ -68,6 +68,13 @@ configure_hostapd()
   systemctl enable hostapd
 }
 
+## Configure the locale
+configure_locale()
+{
+  eval echo "Setting locale and language..." ${STD_LOG_ARG}
+  dpkg-reconfigure locales
+}
+
 ## Set up the network devices
 configure_network()
 {
@@ -174,6 +181,7 @@ while [[ "$1" != "" ]]; do
 done
 
 check_root
+configure_locale
 upgrade_system
 install_dependencies
 ${HAZ_DIR}/scripts/install_nodogsplash.sh
