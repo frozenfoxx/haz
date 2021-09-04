@@ -6,6 +6,7 @@ HAZ=${HAZ:-"https://github.com/frozenfoxx/haz.git"}
 HAZ_DIR=${HAZ_DIR:-'/opt/haz'}
 HAZ_NAME=${HAZ_NAME:-'haz'}
 MOUNT_ROOT=${MOUNT_ROOT:-''}
+LOCALE=${LOCALE:-'en_US.UTF-8'}
 
 # Functions
 
@@ -25,6 +26,17 @@ configure_hostname()
   sudo sed -i "s/raspberrypi/${HAZ_NAME}/g" ${MOUNT_ROOT}/rootfs/etc/hosts
   sudo sed -i "s/raspberrypi/${HAZ_NAME}/g" ${MOUNT_ROOT}/rootfs/etc/hostname
   echo ${HAZ_NAME} > ${MOUNT_ROOT}/boot/hostnames
+}
+
+## Configure the locale settings
+configure_locale()
+{
+  echo "Configuring the locale..."
+  # Comment all uncommented lines
+  sudo sed -i -e 's/^\([^#].*\)/# \1/g' ${MOUNT_ROOT}/rootfs/etc/locale.gen
+
+  # Uncomment the selected locale
+  sudo sed -i -e "s/^#\s${LOCALE} /${LOCALE} /g" ${MOUNT_ROOT}/rootfs/etc/locale.gen
 }
 
 ## Ensure SSH is enabled at boot
@@ -59,6 +71,12 @@ configure_user()
   chmod 700 ${MOUNT_ROOT}/rootfs/home/pi/.ssh
   cp ${AUTHORIZED_KEYS} ${MOUNT_ROOT}/rootfs/home/pi/.ssh/authorized_keys
   chown -R ${PI_USER}:${PI_GROUP} ${MOUNT_ROOT}/rootfs/home/pi
+
+  echo "Setting locale settings for the pi user..."
+  echo "export LANG=${LOCALE}" >> ${MOUNT_ROOT}/rootfs/home/pi/.profile
+  echo "export LANGUAGE=${LOCALE}" >> ${MOUNT_ROOT}/rootfs/home/pi/.profile
+  echo "export LC_ALL=${LOCALE}" >> ${MOUNT_ROOT}/rootfs/home/pi/.profile
+  echo "export LC_TYPE=${LOCALE}" >> ${MOUNT_ROOT}/rootfs/home/pi/.profile
 }
 
 ## Set up WiFi for the inital connection
@@ -131,6 +149,7 @@ usage()
   echo "    HAZ_DIR                directory to clone HAZ to (default: /opt/haz)"
   echo "    HAZ_NAME               name to deploy the HAZ as (default: haz)"
   echo "    MOUNT_ROOT             root mount of the SD card (default: '')"
+  echo "    LOCALE                 locale to switch the Pi to (default: en_US.UTF-8)"
   echo "  Options:"
   echo "    -h | --help            display this usage information"
 }
@@ -148,6 +167,7 @@ done
 
 check_mount_root
 configure_user
+configure_locale
 configure_ssh
 configure_wifi
 configure_hostname

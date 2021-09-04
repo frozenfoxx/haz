@@ -6,6 +6,7 @@ DROOPY_DIR=${DROOPY_DIR:'/data'}
 HAZ_DIR=${HAZ_DIR:-'/opt/haz'}
 HAZ_NAME=${HAZ_NAME:-'haz'}
 MEDIA_DIRECTORY=${MEDIA_DIRECTORY:'/data'}
+LOCALE=${LOCALE:-'en_US.UTF-8'}
 NET_CHANNEL=${NET_CHANNEL:-'6'}
 NET_DHCPRANGE=${NET_DHCPRANGE:-'192.168.4.100,192.168.4.150,5m'}
 NET_DRIVER=${NET_DRIVER:-'nl80211'}
@@ -72,7 +73,8 @@ configure_hostapd()
 configure_locale()
 {
   eval echo "Setting locale and language..." ${STD_LOG_ARG}
-  dpkg-reconfigure locales
+  locale-gen ${LOCALE}
+  update-locale ${LOCALE}
 }
 
 ## Set up the network devices
