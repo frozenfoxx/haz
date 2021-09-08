@@ -19,6 +19,15 @@ build_environment_file()
   chmod 640 /etc/default/random-media-portal
 }
 
+## Cleanup random-media-portal installation
+cleanup()
+{
+  # Remove tools
+  apt-get autoremove -y \
+    build-essential \
+    ruby-dev
+}
+
 ## Configure systemd
 configure_systemd()
 {
@@ -46,7 +55,12 @@ install()
 
   # Change to a directory for optional software
   cd ${SOFTDIR}
-  
+
+  # Install core tools
+  apt-get install -y \
+    build-essential \
+    ruby-dev
+
   # Pull a copy of the latest random-media-portal
   git clone ${RANDOM_MEDIA_PORTAL} ${SOFTDIR}/random-media-portal
   cd ${SOFTDIR}/random-media-portal
@@ -75,7 +89,8 @@ set_logging()
 ## Update Ruby environment
 update_ruby_environment()
 {
-  gem update --system
+  #FIXME: there's a conflict with Debian upstream and local Ruby
+  #gem update --system
   gem install bundler
 
   bundle install
@@ -112,4 +127,5 @@ while [[ "$1" != "" ]]; do
 done
 
 install
+cleanup
 finish_message
