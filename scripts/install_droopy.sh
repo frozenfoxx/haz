@@ -3,7 +3,7 @@
 # Variables
 DOCKER=${DOCKER:-'false'}
 DROOPY=${DROOPY:-"https://github.com/frozenfoxx/droopy.git"}
-DROOPY_DIR=${DROOPY_DIR:'/data'}
+DROOPY_DIR=${DROOPY_DIR:-'/data'}
 DROOPY_PORT=${DROOPY_PORT:-'8020'}
 HAZ_DIR=${HAZ_DIR:-'/opt/haz'}
 SOFTDIR=${SOFTDIR:-'/opt'}
