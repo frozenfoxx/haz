@@ -33,6 +33,10 @@ check_root()
 configure_dhcpcd()
 {
   eval echo "Configuring dhcpcd..." ${STD_LOG_ARG}
+
+  # Export the values for envsubst
+  export NET_IFACE
+
   envsubst < ${HAZ_DIR}/configs/etc/dhcpcd.conf.tmpl > /etc/dhcpcd.conf
 
   # Restart networking to take effect
@@ -45,6 +49,12 @@ configure_dhcpcd()
 configure_dnsmasq()
 {
   eval echo "Configuring dnsmasq..." ${STD_LOG_ARG}
+
+  # Export the values for envsubst
+  export NET_DHCPRANGE
+  export NET_GATEWAY
+  export NET_IFACE
+
   envsubst < ${HAZ_DIR}/configs/etc/dnsmasq.conf.tmpl > /etc/dnsmasq.conf
 
   # Enable the service at boot
@@ -56,7 +66,14 @@ configure_hostapd()
 {
   eval echo "Configuring hostapd..." ${STD_LOG_ARG}
   
-  # Build the config for hostapd
+  # Export the values for envsubst
+  export NET_CHANNEL
+  export NET_DRIVER
+  export NET_HWMODE
+  export NET_IFACE
+  export NET_SSID
+  
+  # Build the config for hostapd  
   envsubst < ${HAZ_DIR}/configs/etc/hostapd/hostapd.conf.tmpl > /etc/hostapd/hostapd.conf
   chmod 640 /etc/hostapd/hostapd.conf
 
