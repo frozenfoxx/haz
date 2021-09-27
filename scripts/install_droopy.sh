@@ -4,6 +4,7 @@
 DOCKER=${DOCKER:-'false'}
 DROOPY=${DROOPY:-"https://github.com/frozenfoxx/droopy.git"}
 DROOPY_DIR=${DROOPY_DIR:-'/data'}
+DROOPY_MESSAGE=${DROOPY_MESSAGE:-'"File upload service"'}
 DROOPY_PORT=${DROOPY_PORT:-'8020'}
 HAZ_DIR=${HAZ_DIR:-'/opt/haz'}
 SOFTDIR=${SOFTDIR:-'/opt'}
@@ -14,7 +15,12 @@ STD_LOG=${STD_LOG:-'install_droopy.log'}
 
 ## Build the environment file
 build_environment_file()
-{
+{  
+  # Export the values for envsubst
+  export DROOPY_DIR
+  export DROOPY_MESSAGE
+  export DROOPY_PORT
+
   envsubst < ${HAZ_DIR}/configs/etc/default/droopy.tmpl > /etc/default/droopy
   chmod 640 /etc/default/droopy
 }
@@ -37,6 +43,7 @@ finish_message()
   eval echo "It is installed to ${SOFT_DIR}/droopy." ${STD_LOG_ARG}
   eval echo "To alter settings check these variables in the /etc/default/droopy file" ${STD_LOG_ARG}
   eval echo "    DROOPY_DIR             path containing uploads" ${STD_LOG_ARG}
+  eval echo "    DROOPY_MESSAGE         message to present to user" ${STD_LOG_ARG}
   eval echo "    DROOPY_PORT            port for the server" ${STD_LOG_ARG}
 }
 
@@ -77,6 +84,7 @@ usage()
   echo "  Environment Variables:"
   echo "    DROOPY                 Git repo for droopy (default: https://github.com/frozenfoxx/Droopy.git)"
   echo "    DROOPY_DIR             directory for uploads (default: /data)"
+  echo "    DROOPY_MESSAGE         message to present to user"
   echo "    DROOPY_PORT            port for the server (default: 8020)"
   echo "    SOFT_DIR               optional software installation directory (default: /opt)"
   echo "    LOG_PATH               path for logs (default: '/var/log')"

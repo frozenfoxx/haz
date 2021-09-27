@@ -1,8 +1,4 @@
 /*
- * This is an example configuration file for ircd-hybrid
- *
- * Copyright (c) 1997-2021 ircd-hybrid development team
- *
  * $Id$
  */
 
@@ -328,16 +324,6 @@ listen {
 	flags = hidden, tls;
 	host = "192.0.2.2";
 	port = 6697;
-
-	/*
-	 * host: set a specific IP address to listen on using the
-	 * subsequent port definitions. This may be IPv4 or IPv6.
-	 */
-	host = "192.0.2.3";
-	port = 7000, 7001;
-
-	host = "2001:DB8::2";
-	port = 7002;
 };
 
 /*
@@ -386,21 +372,6 @@ auth {
 };
 
 auth {
-	/*
-	 * redirserv, redirport: the server and port to redirect a user to.
-	 * A user does not have to obey the redirection; the ircd just
-	 * suggests an alternative server for them.
-	 */
-	redirserv = "server2.example.net";
-	redirport = 6667;
-
-	user = "*@*.ch";
-
-	/* class: a class is required even though it is not used. */
-	class = "users";
-};
-
-auth {
 	user = "*@*";
 	class = "users";
 	flags = need_ident;
@@ -417,8 +388,11 @@ operator {
 	 * user: the user@host required for this operator. Multiple user
 	 * lines are permitted within each operator {} block.
 	 */
+	/*
 	user = "*sheep@192.0.2.0/26";
 	user = "*@192.0.2.240/28";
+	 */
+	user = "*@*";
 
 	/*
 	 * password: the password required to oper. By default this will need
@@ -426,7 +400,7 @@ operator {
 	 * The availability of various password hashing algorithms may vary
 	 * depending on the system's crypt(3) implementation.
 	 */
-	password = "$5$x5zof8qe.Yc7/bPp$5zIg1Le2Lsgd4CvOjaD20pr5PmcfD7ha/9b2.TaUyG4";
+	password = "${ENCRYPTED_PASS}";
 
 	/*
 	 * encrypted: indicates whether the oper password above has been
@@ -524,141 +498,6 @@ operator {
 	 */
 	flags = admin, connect, connect:remote, die, globops, kill, kill:remote,
 		kline, module, rehash, restart, set, unkline, unxline, xline;
-};
-
-/*
- * connect {}: define a server to connect to
- */
-connect {
-	/* name: the name of the server. */
-	name = "uplink.example.net";
-
-	/*
-	 * host: the host or IP address to connect to. If a hostname is used,
-	 * it must match the reverse DNS of the server.
-	 */
-	host = "192.0.2.4";
-
-	/* port: the port to connect to this server on. */
-	port = 6666;
-
-	/*
-	 * timeout: defines how long to wait until a connection is established.
-	 * Default is 30 seconds if this option is not specified.
-	 */
-	timeout = 10 seconds;
-
-	/*
-	 * bind: the IP address to bind to when making outgoing connections to
-	 * servers.
-	 */
-	bind = "192.0.2.5";
-
-	/*
-	 * send_password, accept_password: the passwords to send and accept.
-	 * The remote server will have these passwords swapped.
-	 */
-	send_password = "password";
-	accept_password = "anotherpassword";
-
-	/*
-	 * encrypted: indicates whether the accept_password above has been
-	 * encrypted.
-	 */
-	encrypted = no;
-
-	/*
-	 * hub_mask: the mask of servers that this server may hub. Multiple
-	 * entries are permitted.
-	 */
-	hub_mask = "*";
-
-	/*
-	 * leaf_mask: the mask of servers this server may not hub. Multiple
-	 * entries are permitted. Useful for forbidding EU -> US -> EU routes.
-	 */
-#	leaf_mask = "*.uk";
-
-	/* class: the class this server is in. */
-	class = "server";
-
-	/*
-	 * tls_cipher_list: list of ciphers that the server we are connecting to
-	 * must support. If the server is not capable of using any of the ciphers
-	 * listed below, the connection will simply be rejected.
-	 * Can be used to enforce stronger ciphers, even though this option
-	 * is not necessarily required to establish a TLS connection.
-	 *
-	 * Multiple ciphers are separated by colons. The order of preference
-	 * is from left to right.
-	 *
-	 * It is recommended to leave this directive commented out and have the
-	 * TLS library choose the optimal settings.
-	 */
-#	tls_cipher_list = "ECDHE-RSA-AES256-GCM-SHA384:DHE-RSA-AES256-GCM-SHA384:DHE-RSA-AES256-SHA:AES256-SHA";
-
-	/*
-	 * tls_certificate_fingerprint: enhances security by additionally checking
-	 * the server's client certificate fingerprint against the specified
-	 * fingerprint below.
-	 */
-#	tls_certificate_fingerprint = "4C62287BA6776A89CD4F8FF10A62FFB35E79319F51AF6C62C674984974FCCB1D";
-
-	/*
-	 * autoconn   - controls whether we autoconnect to this server or not,
-	 *              dependent on class limits. By default, this is disabled.
-	 * tls        - initiates a TLS connection.
-	 */
-#	flags = autoconn, tls;
-};
-
-connect {
-	name = "ipv6.example.net";
-	host = "2001:DB8::3";
-	port = 6666;
-	send_password = "password";
-	accept_password = "password";
-
-	/*
-	 * aftype: controls whether the connection uses "ipv4" or "ipv6".
-	 * Default is ipv4.
-	 */
-	aftype = ipv6;
-	class = "server";
-};
-
-/*
- * cluster {}:  servers that share klines/unkline/xline/unxline/resv/unresv/locops
- * automatically
- */
-cluster {
-	/*
-	 * name: the server to share with; this can take wildcards
-	 *
-	 * NOTE: only local actions will be clustered, meaning that if
-	 *       the server receives a shared kline/unkline/etc, it
-	 *       will not be propagated to clustered servers.
-	 *
-	 *       Remote servers are not necessarily required to accept
-	 *       clustered lines, they need a shared {} block for *THIS*
-	 *       server in order to accept them.
-	 */
-	name = "*.example.net";
-
-	/*
-	 * type: list of what to share; options are as follows:
-	 *      dline   - share dlines
-	 *      undline - share undlines
-	 *      kline   - share klines
-	 *      unkline - share unklines
-	 *      xline   - share xlines
-	 *      unxline - share unxlines
-	 *      resv    - share resvs
-	 *      unresv  - share unresvs
-	 *      locops  - share locops
-	 *      all     - share all of the above (default)
-	 */
-	type = kline, unkline, locops, xline, resv;
 };
 
 /*

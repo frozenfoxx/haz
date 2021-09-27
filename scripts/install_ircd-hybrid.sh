@@ -21,6 +21,10 @@ configure()
 
   ENCRYPTED_PASS=$(/usr/bin/mkpasswd ${PASSWORD})
 
+  # Export the values for envsubst
+  export ENCRYPTED_PASS
+  export HAZ_NAME
+
   eval echo "Configuring ircd-hybrid server..." ${STD_LOG_ARG}
   envsubst < ${HAZ_DIR}/configs/etc/ircd-hybrid/ircd.conf.tmpl > /etc/ircd-hybrid/ircd.conf
 

@@ -38,6 +38,11 @@ configure()
     mkdir -p /etc/nodogsplash
   fi
 
+  # Export the values for envsubst
+  export HAZ_NAME
+  export NET_GATEWAY
+  export NET_IFACE
+
   envsubst < ${HAZ_DIR}/configs/etc/nodogsplash/nodogsplash.conf.tmpl > /etc/nodogsplash/nodogsplash.conf
 
   eval echo "Setting up splash pages..." ${STD_LOG_ARG}

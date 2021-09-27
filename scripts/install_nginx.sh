@@ -35,6 +35,9 @@ generate_cert()
 ## Set up and configure nginx
 install()
 {
+  # Export the values for envsubst
+  export HAZ_NAME
+
   eval echo "Configuring nginx templates..." ${STD_LOG_ARG}
   envsubst < ${HAZ_DIR}/configs/etc/nginx/sites-available/index.conf.tmpl > ${HAZ_DIR}/configs/etc/nginx/sites-available/index.conf
   envsubst < ${HAZ_DIR}/configs/etc/nginx/sites-available/random-media-portal.conf.tmpl > ${HAZ_DIR}/configs/etc/nginx/sites-available/random-media-portal.conf
