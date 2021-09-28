@@ -5,6 +5,7 @@ Wants=nginx.service
 
 [Service]
 Type=simple
+Environment=HOME=/root
 ExecStart=/opt/droopy/droopy --config-file /etc/default/droopy
 Restart=always
 TimeoutSec=10
