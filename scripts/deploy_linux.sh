@@ -112,6 +112,9 @@ configure_network()
   # FIXME: this line will also strip similar lines to the gateway
   sed -i "/^${NET_GATEWAY}.*$/d" /etc/hosts
   echo "${NET_GATEWAY} ${HAZ_NAME}" >> /etc/hosts
+  
+  # Strip bad localhost entries
+  sed -i "/^127.*${HAZ_NAME}$/d" /etc/hosts
 }
 
 ## Enable IPv4 forwarding
