@@ -16,5 +16,13 @@ bogus-priv
 # 50 client addresses, 5 minute lease
 dhcp-range=${NET_DHCPRANGE}
 
+# DHCP Options
+dhcp-option=option:router,${NET_GATEWAY}
+dhcp-option=option:dns-server,${NET_GATEWAY}
+dhcp-option=option:netbios-ns,${NET_GATEWAY}
+dhcp-option=option:netbios-dd,${NET_GATEWAY}
+dhcp-option=option:netbios-nodetype,8
+dhcp-option=option:irc-server,${NET_GATEWAY}
+
 # Forward all traffic to the router
 address=/#/${NET_GATEWAY}
