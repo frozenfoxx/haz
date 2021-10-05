@@ -1,6 +1,6 @@
 server {
   listen 80 default_server;
-  server_name _;
+  server_name random-media.${HAZ_NAME};
 
   location / {
     proxy_pass http://localhost:4567/;
@@ -9,7 +9,7 @@ server {
 
 server {
   listen 443 ssl;
-  server_name _;
+  server_name random-media.${HAZ_NAME};
 
   ssl_certificate /etc/ssl/certs/localhost.crt;
   ssl_certificate_key /etc/ssl/private/localhost.key;
