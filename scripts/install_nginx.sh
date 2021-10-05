@@ -39,9 +39,9 @@ install()
   export HAZ_NAME
 
   eval echo "Configuring nginx templates..." ${STD_LOG_ARG}
-  envsubst < ${HAZ_DIR}/configs/etc/nginx/sites-available/index.conf.tmpl > ${HAZ_DIR}/configs/etc/nginx/sites-available/index.conf
-  envsubst < ${HAZ_DIR}/configs/etc/nginx/sites-available/random-media-portal.conf.tmpl > ${HAZ_DIR}/configs/etc/nginx/sites-available/random-media-portal.conf
-  envsubst < ${HAZ_DIR}/configs/etc/nginx/sites-available/upload.conf.tmpl > ${HAZ_DIR}/configs/etc/nginx/sites-available/upload.conf
+  envsubst '${HAZ_NAME}' < ${HAZ_DIR}/configs/etc/nginx/sites-available/index.conf.tmpl > ${HAZ_DIR}/configs/etc/nginx/sites-available/index.conf
+  envsubst '${HAZ_NAME}' < ${HAZ_DIR}/configs/etc/nginx/sites-available/random-media-portal.conf.tmpl > ${HAZ_DIR}/configs/etc/nginx/sites-available/random-media-portal.conf
+  envsubst '${HAZ_NAME}' < ${HAZ_DIR}/configs/etc/nginx/sites-available/upload.conf.tmpl > ${HAZ_DIR}/configs/etc/nginx/sites-available/upload.conf
 
   eval echo "Configuring nginx..." ${STD_LOG_ARG}
   cp ${HAZ_DIR}/configs/etc/nginx/sites-available/*.conf /etc/nginx/sites-available/
@@ -50,7 +50,7 @@ install()
   mkdir -p /var/www/html
   chmod 0755 /var/www/html
 
-  envsubst < ${HAZ_DIR}/configs/var/www/html/index.html.tmpl > /var/www/html/index.html
+  envsubst '${HAZ_NAME}' < ${HAZ_DIR}/configs/var/www/html/index.html.tmpl > /var/www/html/index.html
   chmod 0644 /var/www/html/index.html
 
   # Enable the new sites
