@@ -46,7 +46,7 @@ configure_systemd()
 ## Display finish message
 finish_message()
 {
-  eval echo "The media-portal-badge stack is now installed and ready to go." ${STD_LOG_ARG}
+  eval echo "The random-media-portal is now installed and ready to go." ${STD_LOG_ARG}
   eval echo "To alter which media to serve check these variables in the /etc/default/random-media-portal file" ${STD_LOG_ARG}
   eval echo "    MEDIA_DIRECTORY        path containing media for the portal" ${STD_LOG_ARG}
   eval echo "    MEDIA_MODE             display mode for the portal" ${STD_LOG_ARG}
