@@ -3,7 +3,7 @@
 # Variables
 DOCKER=${DOCKER:-'false'}
 HAZ_DIR=${HAZ_DIR:-'/opt/haz'}
-MEDIA_DIRECTORY=${MEDIA_DIRECTORY:'/data'}
+MEDIA_DIRECTORY=${MEDIA_DIRECTORY:-'/data'}
 MEDIA_MODE=${MEDIA_MODE:-'image'}
 RANDOM_MEDIA_PORTAL=${RANDOM_MEDIA_PORTAL:-"https://github.com/frozenfoxx/random-media-portal.git"}
 SOFTDIR=${SOFTDIR:-'/opt'}
