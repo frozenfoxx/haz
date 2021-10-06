@@ -64,6 +64,19 @@ configure_hostapd()
   cp ${HAZ_DIR}/configs/etc/default/hostapd /etc/default/hostapd
 }
 
+## Configure the MOTD
+configure_motd()
+{
+  eval echo "Setting Message of the Day..." ${STD_LOG_ARG}
+
+  # Export the values for envsubst
+  export HAZ_NAME
+  
+  # Build the MOTD
+  envsubst '${HAZ_NAME}' < ${HAZ_DIR}/configs/etc/motd.tmpl > /etc/motd
+  chmod 644 /etc/motd
+}
+
 ## Set up the network devices
 configure_network()
 {
@@ -145,6 +158,7 @@ ${HAZ_DIR}/scripts/install_random_media_portal.sh -docker
 ${HAZ_DIR}/scripts/install_ircd-hybrid.sh -docker
 ${HAZ_DIR}/scripts/install_droopy.sh
 ${HAZ_DIR}/scripts/install_nginx.sh -docker
+configure_motd
 configure_network
 configure_dhcpcd
 configure_hostapd
