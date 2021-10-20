@@ -280,17 +280,9 @@ class {
  */
 motd {
 	/*
-	 * mask: multiple mask entries are permitted. Mask can either be
-	 * a class name or a hostname. CIDR is supported.
-	 */
-	mask = "*.at";
-	mask = "*.de";
-	mask = "*.ch";
-
-	/*
 	 * file: path to the motd file.
 	 */
-	file = "etc/motd";
+	file = "/etc/motd";
 };
 
 /*
@@ -305,25 +297,7 @@ listen {
 	 */
 
 	/* port: listen on all available IP addresses, ports 6665 to 6669. */
-	port = 6665 .. 6669;
-
-	/*
-	 * Listen on 192.0.2.2/6697 with TLS enabled and hidden from STATS P
-	 * unless you are an administrator.
-	 *
-	 * NOTE: The "flags" directive always has to come before "port".
-	 *
-	 * Currently available flags are:
-	 *
-	 *  tls    - Port may only accept TLS connections
-	 *  server - Only server connections are permitted
-	 *  client - Only client connections are permitted
-	 *  defer  - Delay accepting of new connections until data is ready to be read
-	 *  hidden - Port is hidden from /stats P, unless you're an admin
-	 */
-	flags = hidden, tls;
-	host = "192.0.2.2";
-	port = 6697;
+	port = 6667 .. 6667;
 };
 
 /*
@@ -334,8 +308,7 @@ auth {
 	 * user: the user@host allowed to connect. Multiple user
 	 * lines are permitted within each auth {} block.
 	 */
-	user = "*@192.0.2.0/24";
-	user = "*test@2001:DB8:*";
+	user = "admin@*";
 
 	/* password: an optional password that is required to use this block. */
 	password = "letmein";
@@ -345,12 +318,6 @@ auth {
 	 * encrypted. Default is 'no' if nothing else is specified.
 	 */
 	encrypted = yes;
-
-	/*
-	 * spoof: fake the user's host to this. This is free-form; just do
-	 * everyone a favor and don't abuse it. ('=' prefix on /stats I)
-	 */
-	spoof = "I.still.hate.packets";
 
 	/* class: the class the user is placed in. */
 	class = "opers";
@@ -498,76 +465,6 @@ operator {
 	 */
 	flags = admin, connect, connect:remote, die, globops, kill, kill:remote,
 		kline, module, rehash, restart, set, unkline, unxline, xline;
-};
-
-/*
- * shared {}: users that are allowed to remote kline
- *
- * NOTE: This can effectively be used for remote klines.
- *       Please note that there is no password authentication
- *       for users setting remote klines. You must also be
- *       /oper'd in order to issue a remote kline.
- */
-shared {
-	/*
-	 * name: the server the user must be connected to in order to set klines.
-	 * If this is not specified, the user will be allowed to kline from all
-	 * servers.
-	 */
-	name = "irc2.example.net";
-
-	/*
-	 * user: the user@host mask that is allowed to set klines. If this is
-	 * not specified, all users on the server above will be allowed to set
-	 * a remote kline.
-	 */
-	user = "oper@my.host.is.spoofed";
-
-	/*
-	 * type: list of what to share, options are as follows:
-	 *      dline   - allow oper/server to dline
-	 *      undline - allow oper/server to undline
-	 *      kline   - allow oper/server to kline
-	 *      unkline - allow oper/server to unkline
-	 *      xline   - allow oper/server to xline
-	 *      unxline - allow oper/server to unxline
-	 *      rehash  - allow oper/server to rehash
-	 *      resv    - allow oper/server to resv
-	 *      unresv  - allow oper/server to unresv
-	 *      locops  - allow oper/server to locops - only used for servers that cluster
-	 *      all     - allow oper/server to do all of the above (default)
-	 */
-	type = kline, unkline, resv;
-};
-
-/*
- * kill {}:  users that are not allowed to connect
- * Oper issued klines will be added to the specified kline database
- */
-kill {
-	user = "bad@*.example.net";
-	reason = "Obviously hacked account";
-};
-
-/*
- * deny {}:  IP addresses that are not allowed to connect
- * (before DNS/ident lookup)
- * Oper issued dlines will be added to the specified dline database
- */
-deny {
-	ip = "192.0.2.0/28";
-	reason = "Reconnecting vhosted bots";
-};
-
-/*
- * exempt {}:  IP addresses that are exempt from deny {} and Dlines
- */
-exempt {
-	ip = "192.0.2.240/28";
-
-	/* The 'ip' directives can be stacked */
-	ip = "10.0.0.0/8";
-	ip = "fc00::/7";
 };
 
 /*
