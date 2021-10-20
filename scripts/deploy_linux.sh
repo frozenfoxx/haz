@@ -130,6 +130,23 @@ configure_network()
   sed -i "/^127.*${HAZ_NAME}$/d" /etc/hosts
 }
 
+## Disable the firewall
+disable_firewall()
+{
+  eval echo "Saving backup of firewall in /etc/iptables.orig" ${STD_LOG_ARG}
+
+  iptables-save > /etc/iptables.orig
+
+  eval echo "Disabling firewall..." ${STD_LOG_ARG}
+
+  iptables -F
+  iptables -X
+  iptables -P INPUT ACCEPT
+  iptables -P OUTPUT ACCEPT
+  iptables -P FORWARD ACCEPT
+  iptables-save > /etc/iptables.rules
+}
+
 ## Enable IPv4 forwarding
 enable_forwarding()
 {
@@ -230,3 +247,4 @@ configure_dhcpcd
 configure_hostapd
 enable_forwarding
 configure_dnsmasq
+disable_firewall
