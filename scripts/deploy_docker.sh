@@ -103,23 +103,6 @@ configure_supervisor()
   cp ${HAZ_DIR}/configs/etc/supervisor/conf.d/supervisord.conf /etc/supervisor/conf.d/supervisord.conf
 }
 
-## Disable the firewall
-disable_firewall()
-{
-  eval echo "Saving backup of firewall in /etc/iptables.orig" ${STD_LOG_ARG}
-
-  iptables-save > /etc/iptables.orig
-
-  eval echo "Disabling firewall..." ${STD_LOG_ARG}
-
-  iptables -F
-  iptables -X
-  iptables -P INPUT ACCEPT
-  iptables -P OUTPUT ACCEPT
-  iptables -P FORWARD ACCEPT
-  iptables-save > /etc/iptables.rules
-}
-
 ## Enable IPv4 forwarding
 enable_forwarding()
 {
@@ -182,4 +165,3 @@ configure_hostapd
 enable_forwarding
 configure_dnsmasq
 configure_supervisor
-disable_firewall
