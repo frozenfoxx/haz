@@ -5,6 +5,8 @@ DEBIAN_FRONTEND="noninteractive"
 DROOPY_DIR=${DROOPY_DIR:-'/data'}
 HAZ_DIR=${HAZ_DIR:-'/opt/haz'}
 HAZ_NAME=${HAZ_NAME:-'haz'}
+IRC_ADMIN_PASS=${IRC_ADMIN_PASS:-''}
+IRC_OPER_PASS=${IRC_OPER_PASS:-''}
 MEDIA_DIRECTORY=${MEDIA_DIRECTORY:-'/data'}
 LOCALE=${LOCALE:-'en_US.UTF-8'}
 NET_CHANNEL=${NET_CHANNEL:-'6'}
@@ -213,7 +215,22 @@ usage()
 {
   echo "Usage: [Environment Variables] ./deploy_linux.sh [-hL]"
   echo "  Environment Variables:"
+  echo "    DROOPY_DIR             directory for Droopy file upload (default: '/data')"
+  echo "    HAZ_DIR                directory to install HAZ in (default: '/opt/haz')"
+  echo "    HAZ_NAME               name for HAZ (default: 'haz')"
+  echo "    IRC_ADMIN_PASS         IRC admin password (default: generated)"
+  echo "    IRC_OPER_PASS          IRC operator password (default: generated)"
   echo "    LOG_PATH               path for logs (default: '/var/log')"
+  echo "    MEDIA_DIRECTORY        directory for the random-media-portal (default: '/data')"
+  echo "    LOCALE                 system locale (default: 'en_US.UTF-8')"
+  echo "    NET_CHANNEL            WiFi channel to use (default: '6')"
+  echo "    NET_DHCPRANGE          DHCP range of addresses to provide (default: '192.168.4.100,192.168.4.150,5m')"
+  echo "    NET_DRIVER             network driver to use (default: 'nl80211')"
+  echo "    NET_GATEWAY            network gateway to assign to HAZ (default: '192.168.4.1')"
+  echo "    NET_HWMODE             WiFi mode to use (default: 'g')"
+  echo "    NET_IFACE              network interface to use (default: 'wlan0')"
+  echo "    NET_SSID               SSID to broadcast (default: 'haz')"
+  echo "    SOFTDIR                base software installation directory (default: '/opt')"
   echo "  Options:"
   echo "    -h | --help            display this usage information"
   echo "    -L | --Log             enable logging (target: '[LOG_PATH]/install_haz.log')"

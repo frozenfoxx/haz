@@ -308,10 +308,10 @@ auth {
 	 * user: the user@host allowed to connect. Multiple user
 	 * lines are permitted within each auth {} block.
 	 */
-	user = "admin@*";
+	user = "admin@127.0.0.1";
 
 	/* password: an optional password that is required to use this block. */
-	password = "letmein";
+	password = "${ADMIN_PASS_ENCRYPTED}";
 
 	/*
 	 * encrypted: indicates whether the auth password above has been
@@ -349,7 +349,7 @@ auth {
  */
 operator {
 	/* name: the name of the operator */
-	name = "sheep";
+	name = "operator";
 
 	/*
 	 * user: the user@host required for this operator. Multiple user
@@ -367,7 +367,7 @@ operator {
 	 * The availability of various password hashing algorithms may vary
 	 * depending on the system's crypt(3) implementation.
 	 */
-	password = "${ENCRYPTED_PASS}";
+	password = "${OPER_PASS_ENCRYPTED}";
 
 	/*
 	 * encrypted: indicates whether the oper password above has been
@@ -486,42 +486,23 @@ resv {
 	/*
 	 * mask: masks starting with a '#' are automatically considered
 	 * as channel name masks.
+	 * mask = "#helsinki";
+	 * reason = "Channel is reserved for Finnish inhabitants";
 	 */
-	mask = "#helsinki";
-	reason = "Channel is reserved for Finnish inhabitants";
 
 	/*
 	 * exempt: nick!user@host mask. CIDR is supported. Exempt
 	 * entries can be stacked.
+	 * exempt = "*@*.sexy";
 	 */
-	exempt = "*@*.sexy";
 };
 
 /*
  * gecos {}:  used for banning users based on their "realname".
  */
 gecos {
-	name = "*sex*";
-	reason = "Possible spambot";
-};
-
-gecos {
 	name = "sub7server";
 	reason = "Trojan drone";
-};
-
-/*
- * service {}: specifies a server which may act as a network service
- *
- * NOTE: it is very important that every server on the network
- *       has the same service {} block.
- */
-service {
-	/* name: the actual name of the service. Wildcards are not allowed. */
-	name = "service.example.net";
-
-	/* The 'name' directives can be stacked. */
-	name = "stats.example.net";
 };
 
 /*
@@ -538,79 +519,79 @@ pseudo {
 	name = "NickServ";
 
 	/* target: the actual target where this message should be sent to. */
-	target = "NickServ@service.example.net";
+	target = "NickServ@${HAZ_NAME}";
 };
 
 pseudo {
 	command = "CHANSERV";
 	name = "ChanServ";
-	target = "ChanServ@service.example.net";
+	target = "ChanServ@${HAZ_NAME}";
 };
 
 pseudo {
 	command = "CS";
 	name = "ChanServ";
-	target = "ChanServ@service.example.net";
+	target = "ChanServ@${HAZ_NAME}";
 };
 
 pseudo {
 	command = "NICKSERV";
 	name = "NickServ";
-	target = "NickServ@service.example.net";
+	target = "NickServ@${HAZ_NAME}";
 };
 
 pseudo {
 	command = "NS";
 	name = "NickServ";
-	target = "NickServ@service.example.net";
+	target = "NickServ@${HAZ_NAME}";
 };
 
 pseudo {
 	command = "MEMOSERV";
 	name = "MemoServ";
-	target = "MemoServ@service.example.net";
+	target = "MemoServ@${HAZ_NAME}";
 };
 
 pseudo {
 	command = "MS";
 	name = "MemoServ";
-	target = "MemoServ@service.example.net";
+	target = "MemoServ@${HAZ_NAME}";
 };
 
 pseudo {
 	command = "OPERSERV";
 	name = "OperServ";
-	target = "OperServ@service.example.net";
+	target = "OperServ@${HAZ_NAME}";
 };
 
 pseudo {
 	command = "OS";
 	name = "OperServ";
-	target = "OperServ@service.example.net";
+	target = "OperServ@${HAZ_NAME}";
 };
 
 pseudo {
 	command = "HOSTSERV";
 	name = "HostServ";
-	target = "HostServ@service.example.net";
+	target = "HostServ@${HAZ_NAME}";
 };
 
 pseudo {
 	command = "HS";
 	name = "HostServ";
-	target = "HostServ@service.example.net";
+	target = "HostServ@${HAZ_NAME}";
 };
 
 pseudo {
 	command = "BOTSERV";
 	name = "BotServ";
-	target = "BotServ@service.example.net";
+	target = "BotServ@${HAZ_NAME}";
 };
 
 pseudo {
 	command = "BS";
 	name = "BotServ";
-	target = "BotServ@service.example.net";
+	target = "BotServ@${HAZ_NAME}";
 };
 
 /*
@@ -749,7 +730,7 @@ serverhide {
 	/*
 	 * hidden_name: use this as the servername users see if hide_servers = yes.
 	 */
-	hidden_name = "*.example.net";
+	hidden_name = "*.${HAZ_NAME}";
 
 	/*
 	 * hide_server_ips: if this is disabled, opers will be unable to see
