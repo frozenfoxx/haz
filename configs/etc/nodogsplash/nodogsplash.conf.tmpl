@@ -34,34 +34,7 @@ GatewayInterface ${NET_IFACE}
 # the preauthenticated-users ruleset.
 #
 FirewallRuleSet authenticated-users {
-
-# You may want to open access to a machine on a local
-# subnet that is otherwise blocked (for example, to
-# serve a redirect page; see RedirectURL).  If so,
-# allow that explicitly here, e.g:
-#  FirewallRule allow tcp port 80 to 192.168.254.254
-
-# Your router may have several interfaces, and you
-# probably want to keep them private from the GatewayInterface.
-# If so, you should block the entire subnets on those interfaces, e.g.:
-#  FirewallRule block to 192.168.0.0/16
-#  FirewallRule block to 10.0.0.0/8
-
-# Typical ports you will probably want to open up include
-# 53 udp and tcp for DNS,
-# 80 for http,
-# 443 for https,
-# 22 for ssh:
-#  FirewallRule allow tcp port 53
-#  FirewallRule allow udp port 53
-#  FirewallRule allow tcp port 80
-#  FirewallRule allow tcp port 443
-#  FirewallRule allow tcp port 22
-# Or for happy customers allow all
   FirewallRule allow all
-# You might use ipset to easily allow/block range of ips, e.g.: 
-# FirewallRule allow ipset WHITELISTED_IPS
-# FirewallRule allow tcp port 80 ipset WHITELISTED_IPS
 }
 # end FirewallRuleSet authenticated-users
 
@@ -115,20 +88,7 @@ FirewallRuleSet preauthenticated-users {
 # packet that does not match any rule is rejected.
 #
 FirewallRuleSet users-to-router {
- # Nodogsplash automatically allows tcp to GatewayPort,
- # at GatewayAddress, to serve the splash page.
- # However you may want to open up other ports, e.g.
- # 53 for DNS and 67 for DHCP if the router itself is
- # providing these services.
-    FirewallRule allow udp port 53
-    FirewallRule allow tcp port 53
-    FirewallRule allow udp port 67
- # You may want to allow ssh, http, and https to the router
- # for administration from the GatewayInterface.  If not,
- # comment these out.
-   FirewallRule allow tcp port 22
-   FirewallRule allow tcp port 80
-   FirewallRule allow tcp port 443
+  FirewallRule allow all
 }
 # end FirewallRuleSet users-to-router
 
