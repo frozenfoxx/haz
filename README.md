@@ -1,6 +1,6 @@
 # haz
 
-[![Build Status](https://cloud.drone.io/api/badges/frozenfoxx/haz/status.svg?ref=refs/heads/main)](https://cloud.drone.io/frozenfoxx/haz)
+[![Actions Status](https://github.com/frozenfoxx/haz/workflows/build/badge.svg)](https://github.com/frozenfoxx/haz/actions)
 
 Hacker Autonomous Zone
 
